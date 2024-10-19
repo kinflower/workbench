@@ -49,8 +49,7 @@ export default defineComponent({
 
     function sendCode() {
       if(!validateEmail(formData.email)) {
-        messageBox.value.title = '邮箱验证有误'
-        messageBox.value.visible = true
+        messageBox.value.open('邮箱验证有误', 'warn')
         return
       }
       canSendCode.value = false;
@@ -64,8 +63,7 @@ export default defineComponent({
       }, 1000);
       var s = generateRandomNumber(14) + btoa(generateRandomNumber(6))
       api_sendCode({code: s, email: formData.email}).then(() => {
-        messageBox.value.title = '验证码发送成功'
-        messageBox.value.visible = true
+        messageBox.value.open('验证码发送成功', 'success')
       })
     }
 
@@ -74,16 +72,13 @@ export default defineComponent({
       resetShow()
       if (objIsNotNull(formData)) {
         objIsNullName(formData).forEach(item => show[item]=true)
-        messageBox.value.title = '必填项不能为空'
-        messageBox.value.visible = true
+        messageBox.value.open('必填项不能为空', 'warn')
         return
       }
       api_changePassword(formData).then(() => {
-        messageBox.value.title = '密码修改成功'
-        messageBox.value.visible = true
         router.replace('/login')
       }).catch(err => {
-        console.log(err)
+        messageBox.value.open(err, 'error')
       })
     };
 

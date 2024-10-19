@@ -45,15 +45,14 @@ export default defineComponent({
       resetShow()
       if (objIsNotNull(formData)) {
         objIsNullName(formData).forEach(item => show[item]=true)
-        messageBox.value.title = '必填项不能为空'
-        messageBox.value.visible = true
+        messageBox.value.open('必填项不能为空', 'warn')
         return
       }
       api_login(formData).then((res: any) => {
         localStorage.setItem('token', res.token)
         router.replace('/')
       }).catch(err => {
-        console.log(err)
+        messageBox.value.open(err, 'error')
       })
     };
 
@@ -76,7 +75,7 @@ export default defineComponent({
       messageBox,
       login,
       register,
-      forgotPassword,
+      forgotPassword
     };
   },
 });

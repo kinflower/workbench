@@ -1,6 +1,5 @@
 <template>
     <div>
-        xxx
         <button @click="exit">退出</button>
     </div>
 </template>

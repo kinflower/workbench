@@ -1,6 +1,6 @@
 <template>
     <Transition>
-        <div v-if="visible" class="modal-overlay">
+        <div v-if="visible" class="modal-overlay" :style="{backgroundColor: setColor}">
             <div class="modal-content">{{ title }}</div>
             <i class="iconfont icon-close" @click="closeModal"></i>
         </div>
@@ -16,7 +16,21 @@ export default defineComponent({
             title: '操作成功',
             autoClose: true,
             visible: false,
+            type: 'success',
             delay: 2000
+        }
+    },
+    computed: {
+        setColor() {
+            if(this.type == 'success') {
+                return '#c2e7b0'
+            }else if(this.type == 'error') {
+                return '#f5dab1'
+            }else if(this.type == 'warn') {
+                return '#f5dab1'
+            } else {
+                return '#dddddd'
+            }
         }
     },
     watch: {
@@ -31,6 +45,11 @@ export default defineComponent({
     methods: {
         closeModal() {
             this.visible = false
+        },
+        open(title: string, type: string) {
+            this.title = title
+            this.type = type
+            this.visible = true
         }
     }
 })
