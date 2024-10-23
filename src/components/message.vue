@@ -1,6 +1,6 @@
 <template>
     <Transition>
-        <div v-if="visible" class="modal-overlay" :style="{backgroundColor: setColor}">
+        <div v-if="visible" class="modal-overlay" :style="{backgroundColor: setBgColor, color: setColor}">
             <div class="modal-content">{{ title }}</div>
             <i class="iconfont icon-close" @click="closeModal"></i>
         </div>
@@ -10,7 +10,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 export default defineComponent({
-    name: 'MessageBox',
+    name: 'messageBox',
     data() {
         return {
             title: '操作成功',
@@ -21,13 +21,24 @@ export default defineComponent({
         }
     },
     computed: {
-        setColor() {
+        setBgColor() {
             if(this.type == 'success') {
                 return '#c2e7b0'
             }else if(this.type == 'error') {
-                return '#f5dab1'
+                return '#f8d4d2'
             }else if(this.type == 'warn') {
-                return '#f5dab1'
+                return '#f7e5cb'
+            } else {
+                return '#dddddd'
+            }
+        },
+        setColor() {
+            if(this.type == 'success') {
+                return '#429618'
+            }else if(this.type == 'error') {
+                return '#d34b41'
+            }else if(this.type == 'warn') {
+                return '#df9931'
             } else {
                 return '#dddddd'
             }
@@ -80,15 +91,5 @@ export default defineComponent({
 .icon-close {
     font-size: 12px;
     cursor: pointer;
-}
-
-.v-enter-active,
-.v-leave-active {
-    transition: opacity 0.5s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-    opacity: 0;
 }
 </style>

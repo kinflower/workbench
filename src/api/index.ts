@@ -12,7 +12,8 @@ const request: AxiosInstance = axios.create({
 request.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const token: string | null = localStorage.getItem('token')
-    config.headers.Authorization = `Bearer ${token}`;
+    const email: any = localStorage.getItem('email')
+    config.headers.Authorization = `${token}+${btoa(email)}`;
     return config;
   },
   (error) => {

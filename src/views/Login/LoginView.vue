@@ -10,7 +10,7 @@
     </div>
     <div class="title" v-show="show.password">密码不能为空</div>
     <div class="form-group">
-      <button class="login" @click="login">登录</button>
+      <button types="default" class="login" @click="login">登录</button>
     </div>
     <div class="foot">
       <div class="back" @click="register">注册</div>
@@ -48,9 +48,14 @@ export default defineComponent({
         messageBox.value.open('必填项不能为空', 'warn')
         return
       }
+      formData.password = btoa('pass' + btoa(formData.password) + 'word').split('').reverse().join('')
       api_login(formData).then((res: any) => {
         localStorage.setItem('token', res.token)
+        localStorage.setItem('email', formData.email)
         router.replace('/')
+        setTimeout(() => {
+          window.location.reload()
+        }, 100)
       }).catch(err => {
         messageBox.value.open(err, 'error')
       })

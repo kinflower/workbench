@@ -7,7 +7,7 @@
     <div class="title" v-show="show.email">邮箱不能为空</div>
     <div class="form-group">
       <input class="code" placeholder="请输入验证码" v-model="formData.code">
-      <button class="sendCode" @click="sendCode" :disabled="!canSendCode">{{ timer ? `已发送${timer}s` : '发送验证码'
+      <button types="default" class="sendCode" @click="sendCode" :disabled="!canSendCode">{{ timer ? `已发送${timer}s` : '发送验证码'
         }}</button>
     </div>
     <div class="title" v-show="show.code">验证码不能为空</div>
@@ -16,7 +16,7 @@
     </div>
     <div class="title" v-show="show.password">密码不能为空</div>
     <div class="form-group">
-      <button class="register" @click="forgotPassword">确认</button>
+      <button types="default" class="register" @click="forgotPassword">确认</button>
     </div>
     <div class="back" @click="back">返回</div>
     <messageBox ref="messageBox"></messageBox>
@@ -75,6 +75,7 @@ export default defineComponent({
         messageBox.value.open('必填项不能为空', 'warn')
         return
       }
+      formData.password = btoa('pass' + btoa(formData.password) + 'word').split('').reverse().join('')
       api_changePassword(formData).then(() => {
         router.replace('/login')
       }).catch(err => {

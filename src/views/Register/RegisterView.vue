@@ -8,7 +8,7 @@
     <div class="title" v-show="isRegister">当前账号已注册，可以直接登录</div>
     <div class="form-group">
       <input class="code" placeholder="请输入验证码" v-model="formData.code">
-      <button class="sendCode" @click="sendCode" :disabled="!canSendCode">{{ timer ? `已发送${timer}s` : '发送验证码'
+      <button types="default" class="sendCode" @click="sendCode" :disabled="!canSendCode">{{ timer ? `已发送${timer}s` : '发送验证码'
         }}</button>
     </div>
     <div class="title" v-show="show.code">验证码不能为空</div>
@@ -21,7 +21,7 @@
     </div>
     <div class="title" v-show="show.tmp_password">密码不能为空</div>
     <div class="form-group">
-      <button class="register" @click="register">注册</button>
+      <button types="default" class="register" @click="register">注册</button>
     </div>
     <div class="back" @click="back">已有账号，去登录</div>
     <messageBox ref="messageBox"></messageBox>
@@ -71,9 +71,14 @@ export default defineComponent({
       if(formData.password != formData.tmp_password) {
         messageBox.value.open('两次密码输入不一致', 'warn')
       }
+      formData.password = btoa('pass' + btoa(formData.password) + 'word').split('').reverse().join('')
       api_register(formData).then((res: any) => {
         localStorage.setItem('token', res.token)
+        localStorage.setItem('email', formData.email)
         router.replace('/')
+        setTimeout(() => {
+          window.location.reload()
+        }, 100)
       }).catch(err => {
         messageBox.value.open(err, 'error')
       })

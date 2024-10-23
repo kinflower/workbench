@@ -40,3 +40,29 @@ export function api_changePassword(data: object) {
         data
     })
 }
+
+export function api_personalInfo() {
+    return request({
+        url: '/personalInfo',
+        method: 'GET'
+    })
+}
+
+export function api_upload(data: object) {
+    return request({
+        url: '/upload',
+        method: 'POST',
+        data,
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
+}
+
+export function api_updateInfo(data: object) {
+    return request({
+        url: '/updateInfo',
+        method: 'POST',
+        data
+    })
+}
