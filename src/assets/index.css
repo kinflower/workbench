@@ -13,7 +13,13 @@ input {
     padding: 5px;
     border-radius: 4px;
     outline: none;
-    border: none;
+    border: 1px solid #fff;
+    transition-duration: 500ms;
+}
+
+input:focus {
+    border: 1px solid #6b46c1;
+    transition-duration: 500ms;
 }
 
 .fade-enter-active, .fade-leave-active {
@@ -73,12 +79,12 @@ button[types=info]:hover {
 }
 
 button[disabled] {
-    border: none;
-    background-color: #f0e6ff;
+    border: 1px solid #c7c7c7;
+    background-color: #c7c7c7;
 }
 
 button[disabled]:hover {
-    background-color: #f0e6ff;
+    background-color: #c7c7c7;
 }
 
 .v-enter-active,

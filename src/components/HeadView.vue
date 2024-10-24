@@ -20,6 +20,7 @@
 
 <script lang="ts">
 import { api_personalInfo } from '@/api/login';
+import { useInfoStore } from '@/stores/info';
 import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router';
 export default defineComponent({
@@ -30,6 +31,7 @@ export default defineComponent({
         const showSelect = ref(false)
         const info: any = ref({})
         const dialogView: any = ref(null)
+        const infoStores = useInfoStore()
         const handleEvent = (val: string) => {
             if(val == '个人') {
                 router.push('/personage')
@@ -52,13 +54,19 @@ export default defineComponent({
         const getPersonalInfo = () => {
             api_personalInfo().then((res: any) => {
                 info.value = res.message
+                infoStores.setInfo(res.message)
             })
         }
         return {
-            list, showSelect, dialogView, info,
+            list, showSelect, dialogView, info, infoStores,
             handleEvent, setShow, confirm, handleNav, getPersonalInfo
             
         };
+    },
+    watch: {
+        ["infoStores.state"]() {
+            this.getPersonalInfo()
+        }
     },
     created() {
         const token = localStorage.getItem('token')
@@ -121,6 +129,7 @@ img {
     background: #f0e6ff;
     text-align: center;
     font-size: 12px;
+    z-index: 100;
 }
 .select_item {
     padding: 5px 0;

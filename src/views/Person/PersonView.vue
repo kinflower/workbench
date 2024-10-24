@@ -45,6 +45,7 @@
 import { api_personalInfo, api_sendCode, api_updateInfo, api_upload } from '@/api/login';
 import { generateRandomNumber } from '@/assets/util';
 import router from '@/router';
+import { useInfoStore } from '@/stores/info';
 import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
@@ -55,6 +56,7 @@ export default defineComponent({
         const timer = ref(0);
         const messageBox: any = ref(null)
         const info: any = ref({})
+        const infoStores = useInfoStore()
         const changePassword = () => {
             isChange.value = true
         }
@@ -95,10 +97,11 @@ export default defineComponent({
                 messageBox.value.open(res.message, 'success')
                 isChange.value = false
                 getPersonalInfo()
+                infoStores.state = !infoStores.state
             })
         }
         const back = () => {
-            router.push('/')
+            router.back()
         }
         const choseImg = () => {
             const file: any = document.getElementById('fileInput')
