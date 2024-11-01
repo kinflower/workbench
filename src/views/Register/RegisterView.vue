@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>练习汇总平台</h1>
+    <h1 class="login_title">练习汇总平台</h1>
     <div class="form-group">
       <input class="email" type="email" v-model="formData.email" placeholder="请输入邮箱" autocomplete="off" @change="checkAccount">
     </div>

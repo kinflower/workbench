@@ -39,7 +39,7 @@ input:focus {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
+.login_title {
     text-align: center;
     color: #6b46c1;
     margin-bottom: 20px;
@@ -60,6 +60,10 @@ button[types=default] {
     color: white;
     cursor: pointer;
 }
+button[types=default]:hover {
+    background-color: #4f34a0;
+}
+
 
 button[types=info] {
     display: block;
@@ -70,12 +74,21 @@ button[types=info] {
     color: #6b46c1;
     cursor: pointer;
 }
-button[types=default]:hover {
-    background-color: #4f34a0;
-}
-
 button[types=info]:hover {
     background-color: #f0e6ff;
+}
+
+button[types=error] {
+    display: block;
+    padding: 4px 10px;
+    border: 1px solid #c22d22;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #c22d22;
+    cursor: pointer;
+}
+button[types=error]:hover {
+    background-color: #f0e0e0;
 }
 
 button[disabled] {

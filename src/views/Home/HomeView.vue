@@ -2,50 +2,44 @@
     <div class="bg">
         <input class="search" v-model="search" placeholder="输入关键字">
         <div class="content">
-            <div class="item" v-for="(item, index) in list" :key="index">
-                <div class="icon"></div>
+            <div class="item" v-for="(item, index) in list" :key="index" @click="openApp(item.name)">
+                <div class="icon" :class="item.icon"></div>
                 <div class="title">{{ item.name }}</div>
             </div>
+        </div>
+        <div class="memo">
+            <MemoView ref="memo"></MemoView>
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
+import MemoView from '@/components/memo/memoView.vue';
 export default defineComponent({
     name: 'HomeView',
     setup() {
         const list = ref([
             {
-                name: '应用1'
-            },
-            {
-                name: '应用2'
-            },
-            {
-                name: '应用3'
-            },
-            {
-                name: '应用4'
-            },
-            {
-                name: '应用5'
-            },
-            {
-                name: '应用6'
-            },
-            {
-                name: '应用7'
-            },
-            {
-                name: '应用8'
+                name: '备忘录',
+                icon: 'iconfont icon-beiwanglu'
             }
         ])
         const search = ref('')
+        const memo: any = ref(null)
+        function openApp(name: string) {
+            switch(name) {
+                case '备忘录':
+                    memo.value.showDialog()
+                    break
+            }
+        }
         return {
-            list, search
+            list, search, memo,
+            openApp
         }
     },
+    components: {MemoView}
 });
 </script>
 <style scoped>
@@ -57,6 +51,7 @@ export default defineComponent({
     right: 0;
     bottom: 0;
     z-index: 1;
+    overflow: hidden;
 }
 .search {
     margin: 100px auto 0;
@@ -84,6 +79,10 @@ export default defineComponent({
     border-radius: 5px;
     background: #6b46c1;
     cursor: pointer;
+    font-size: 45px;
+    color: #e9e9e9;
+    text-align: center;
+    padding-top: 15px;
 }
 .title {
     margin-top: 5px;

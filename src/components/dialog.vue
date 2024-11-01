@@ -5,7 +5,7 @@
                 <div class="message">{{ message }}</div>
                 <div class="btn_group">
                     <button types="default" class="confirm" @click="confirm">确定</button>
-                    <button types="info" class="cancel" @click="isVisible=false">取消</button>
+                    <button types="info" class="cancel" @click="cancel">取消</button>
                 </div>
             </div>
         </div>
@@ -19,13 +19,21 @@ export default defineComponent({
     setup(props, { emit }) {
         const isVisible = ref(false)
         const message = ref('是否确定？')
+        const data = ref('')
+        const setData = (value: string) => {
+            data.value = value
+        }
         const confirm = () => {
             isVisible.value = false
-            emit('confirm')
+            emit('confirm', data.value)
+        }
+        const cancel = () => {
+            isVisible.value = false
+            emit('cancel', data.value)
         }
         return {
             isVisible, message,
-            confirm
+            confirm, cancel, setData
         }
     }
 })
@@ -34,7 +42,7 @@ export default defineComponent({
 <style scoped>
 .modal {
     position: fixed;
-    z-index: 1;
+    z-index: 999;
     left: 0;
     top: 0;
     right: 0;
