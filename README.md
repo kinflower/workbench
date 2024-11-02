@@ -1,32 +1,38 @@
 # workbench
 
-This template should help get you started developing with Vue 3 in Vite.
+## 运行环境
 
-## Recommended IDE Setup
+nodejs >= 16.18.0
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## 功能模块
 
-## Type Support for `.vue` Imports in TS
+### 登录模块
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+- 账号登录、注册、密码修改
+- 网易邮箱接入(目前通过邮箱注册是免费的，可用于项目练习)
 
-## Customize configuration
+### 个人信息模块
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+- 个人信息编辑、密码修改
+- 头像上传
 
-## Project Setup
+### 备忘录模块
+
+- 列表数据新增、查看、修改、删除
+
+## 项目初始化
 
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### 项目运行
 
 ```sh
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### 项目编译打包
 
 ```sh
 npm run build
