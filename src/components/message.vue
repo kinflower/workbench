@@ -2,65 +2,58 @@
     <Transition>
         <div v-if="visible" class="modal-overlay" :style="{backgroundColor: setBgColor, color: setColor}">
             <div class="modal-content">{{ title }}</div>
-            <i class="iconfont icon-close" @click="closeModal"></i>
+            <i class="iconfont icon-close" @click="visible = false"></i>
         </div>
     </Transition>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent, ref, watch, type Ref } from 'vue';
 export default defineComponent({
     name: 'messageBox',
-    data() {
-        return {
-            title: '操作成功',
-            autoClose: true,
-            visible: false,
-            type: 'success',
-            delay: 2000
-        }
-    },
-    computed: {
-        setBgColor() {
-            if(this.type == 'success') {
+    setup() {
+        const title: Ref<string> = ref('操作成功')
+        const autoClose: Ref<boolean> = ref(true)
+        const visible: Ref<boolean> = ref(false)
+        const type: Ref<string> = ref('success')
+        const delay: Ref<number> = ref(2000)
+        const setBgColor = computed(() => {
+            if(type.value == 'success') {
                 return '#c2e7b0'
-            }else if(this.type == 'error') {
+            }else if(type.value == 'error') {
                 return '#f8d4d2'
-            }else if(this.type == 'warn') {
+            }else if(type.value == 'warn') {
                 return '#f7e5cb'
             } else {
                 return '#dddddd'
             }
-        },
-        setColor() {
-            if(this.type == 'success') {
+        })
+        const setColor = computed(() => {
+            if(type.value == 'success') {
                 return '#429618'
-            }else if(this.type == 'error') {
+            }else if(type.value == 'error') {
                 return '#d34b41'
-            }else if(this.type == 'warn') {
+            }else if(type.value == 'warn') {
                 return '#df9931'
             } else {
                 return '#dddddd'
             }
-        }
-    },
-    watch: {
-        visible(newVal) {
-            if(newVal && this.autoClose) {
+        })
+        watch(visible, (newVal) => {
+            if(newVal && autoClose.value) {
                 setTimeout(() => {
-                    this.visible = false
-                }, this.delay)
+                    visible.value = false
+                }, delay.value)
             }
+        })
+        function open(title_val: string, type_val: string) {
+            title.value = title_val
+            type.value = type_val
+            visible.value = true
         }
-    },
-    methods: {
-        closeModal() {
-            this.visible = false
-        },
-        open(title: string, type: string) {
-            this.title = title
-            this.type = type
-            this.visible = true
+        return {
+            title, autoClose, visible, type, delay,
+            setBgColor, setColor, open
         }
     }
 })

@@ -1,21 +1,24 @@
 <template>
     <transition>
         <div class="bg" v-if="show" @click="show = false">
-            <img class="preview" :src="src" alt="">
+            <img class="preview" :src="src" alt="preview">
         </div>
     </transition>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, type Ref } from 'vue'
 
 export default defineComponent({
     name: 'imgView',
     props: {
-        src: String
+        src: {
+            type: String,
+            default: () => ''
+        }
     },
     setup () {
-        const show = ref(false)
+        const show: Ref<boolean> = ref(false)
         return {
             show
         }

@@ -25,23 +25,23 @@ import { api_login } from '@/api/login';
 import { objIsNotNull, objIsNullName } from '@/assets/util';
 import { defineComponent, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import type { FormData, Show } from './type';
 
 export default defineComponent({
   name: 'LoginView',
   setup() {
-    const formData = reactive({
+    const formData: FormData = reactive({
       email: "",
       password: ""
     })
-    const show: any = reactive({
+    const show: Show = reactive({
       email: false,
       password: false
     })
     const messageBox: any = ref(null)
     const router = useRouter();
 
-    const login = async () => {
-      // console.log('登录', formData);
+    const login = async () => { // 账号登录
       resetShow()
       if (objIsNotNull(formData)) {
         objIsNullName(formData).forEach(item => show[item]=true)
@@ -58,6 +58,7 @@ export default defineComponent({
         }, 100)
       }).catch(err => {
         messageBox.value.open(err, 'error')
+        formData.password = ''
       })
     };
 
@@ -69,7 +70,7 @@ export default defineComponent({
       router.push('/forgot');
     };
 
-    function resetShow() {
+    function resetShow() { // 隐藏提示
       show.email = false
       show.password = false
     }

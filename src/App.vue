@@ -6,21 +6,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onBeforeMount, ref, type Ref } from 'vue'
 
 export default defineComponent({
   setup () {
-    const show = ref(true)
+    const show: Ref<boolean> = ref(true)
+      onBeforeMount(() => {
+        const token = localStorage.getItem('token')
+        if(token) {
+          show.value = true
+        }else {
+          show.value = false
+        }
+      })
     return {
       show
-    }
-  },
-  created() {
-    const token = localStorage.getItem('token')
-    if(token) {
-      this.show = true
-    }else {
-      this.show = false
     }
   }
 })

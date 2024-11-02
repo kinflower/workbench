@@ -29,35 +29,35 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue';
+import { defineComponent, reactive, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { api_checkAccount, api_register, api_sendCode } from '@/api/login';
 import { generateRandomNumber, objIsNotNull, objIsNullName, validateEmail } from '@/assets/util';
+import type { FormData, Show } from './type';
 
 export default defineComponent({
   name: 'RegisterView',
   setup() {
-    const formData = reactive({
+    const formData: FormData = reactive({
       email: "",
       password: "",
       tmp_password: "",
       code: ""
     })
-    const show: any = reactive({
+    const show: Show = reactive({
       email: false,
       password: false,
       tmp_password: false,
       code: false
     })
-    const canSendCode = ref(true);
-    const timer = ref(0);
-    const visible = ref(false)
-    const messageBox: any = ref(null)
+    const canSendCode: Ref<boolean> = ref(true);
+    const timer: Ref<number> = ref(0);
+    const visible: Ref<boolean> = ref(false)
+    const messageBox: Ref<any> = ref(null)
     const router = useRouter();
-    const isRegister = ref(false)
+    const isRegister: Ref<boolean> = ref(false)
 
-    function register() {
-      // console.log('注册', formData);
+    function register() { // 注册事件
       if(isRegister.value) {
         messageBox.value.open('当前账号已注册，可以直接登录', 'warn')
         return
@@ -84,7 +84,7 @@ export default defineComponent({
       })
     }
 
-    function sendCode() {
+    function sendCode() { // 发送验证码
       if(!validateEmail(formData.email)) {
         messageBox.value.open('邮箱验证有误', 'warn')
         return
@@ -104,14 +104,14 @@ export default defineComponent({
       })
     }
 
-    function resetShow() {
+    function resetShow() { // 隐藏提示
       show.email = false
       show.password = false
       show.tmp_password = false
       show.code = false
     }
 
-    function checkAccount() {
+    function checkAccount() { // 检查注册情况
       api_checkAccount({ email: formData.email }).then(() => {
         isRegister.value = false
       }).catch(() => {

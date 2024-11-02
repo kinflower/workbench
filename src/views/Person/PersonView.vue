@@ -27,7 +27,7 @@
             <div class="form_group">
                 <div class="form_title">密码修改</div>
                 <input v-if="isChange" v-model="info.newPassword" type="password" placeholder="输入新密码">
-                <button types="default" v-if="!isChange" class="change_btn" @click="changePassword">修改密码</button>
+                <button types="default" v-if="!isChange" class="change_btn" @click="isChange = true">修改密码</button>
             </div>
             <div class="form_group" v-if="isChange">
                 <div class="form_title">验证码</div>
@@ -46,21 +46,18 @@ import { api_personalInfo, api_sendCode, api_updateInfo, api_upload } from '@/ap
 import { generateRandomNumber } from '@/assets/util';
 import router from '@/router';
 import { useInfoStore } from '@/stores/info';
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onBeforeMount, ref, type Ref } from 'vue'
 
 export default defineComponent({
     name: "PersonView",
     setup() {
-        const isChange = ref(false)
-        const canSendCode = ref(true);
-        const timer = ref(0);
-        const messageBox: any = ref(null)
-        const info: any = ref({})
+        const isChange: Ref<boolean> = ref(false)
+        const canSendCode: Ref<boolean> = ref(true);
+        const timer: Ref<number> = ref(0);
+        const messageBox: Ref<any> = ref(null)
+        const info: Ref<any> = ref({})
         const infoStores = useInfoStore()
-        const changePassword = () => {
-            isChange.value = true
-        }
-        const sendCode = () => {
+        const sendCode = () => { // 发送验证码
             canSendCode.value = false;
             timer.value = 60;
             const interval = setInterval(() => {
@@ -75,21 +72,21 @@ export default defineComponent({
                 messageBox.value.open('验证码发送成功', 'success')
             })
         }
-        const getPersonalInfo = () => {
+        const getPersonalInfo = () => { // 获取个人信息
             api_personalInfo().then((res: any) => {
                 info.value = res.message
                 info.value.code = ''
                 info.value.newPassword = ''
             })
         }
-        const upload = (e: any) => {
+        const upload = (e: any) => { // 上传图片
             const formData = new FormData()
             formData.append('image', e.target.files[0])
             api_upload(formData).then((res: any) => {
                 info.value.imgUrl = res.file
             })
         }
-        const save = () => {
+        const save = () => { // 保存个人信息
             if(info.value.newPassword) {
                 info.value.newPassword = btoa('pass' + btoa(info.value.newPassword) + 'word').split('').reverse().join('')
             }
@@ -104,17 +101,15 @@ export default defineComponent({
             router.back()
         }
         const choseImg = () => {
-            const file: any = document.getElementById('fileInput')
-            file.click()
+            document.getElementById('fileInput')?.click()
         }
+        onBeforeMount(() => {
+            getPersonalInfo()
+        })
         return {
             info, isChange, messageBox, canSendCode, timer,
-            changePassword, getPersonalInfo, save, choseImg, sendCode,
-            upload, back
+            save, choseImg, sendCode, upload, back
         }
-    },
-    created() {
-        this.getPersonalInfo()
     }
 })
 </script>

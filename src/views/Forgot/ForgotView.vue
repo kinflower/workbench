@@ -26,28 +26,29 @@
 <script lang="ts">
 import { api_changePassword, api_sendCode } from '@/api/login';
 import { generateRandomNumber, objIsNotNull, objIsNullName, validateEmail } from '@/assets/util';
-import { defineComponent, reactive, ref } from 'vue';
+import { defineComponent, reactive, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
+import type { FormData, Show } from './type';
 
 export default defineComponent({
   name: 'ForgotPassword',
   setup() {
-    const formData = reactive({
+    const formData: FormData = reactive({
       email: "",
       password: "",
       code: ""
     })
-    const show: any = reactive({
+    const show: Show = reactive({
       email: false,
       password: false,
       code: false
     })
-    const canSendCode = ref(true);
-    const timer = ref(0);
-    const messageBox: any = ref(null)
+    const canSendCode: Ref<boolean> = ref(true);
+    const timer: Ref<number> = ref(0);
+    const messageBox: Ref<any> = ref(null)
     const router = useRouter();
 
-    function sendCode() {
+    function sendCode() { // 发送验证码
       if(!validateEmail(formData.email)) {
         messageBox.value.open('邮箱验证有误', 'warn')
         return
@@ -67,8 +68,7 @@ export default defineComponent({
       })
     }
 
-    const forgotPassword = () => {
-      // console.log('忘记密码', formData);
+    const forgotPassword = () => { // 确认修改
       resetShow()
       if (objIsNotNull(formData)) {
         objIsNullName(formData).forEach(item => show[item]=true)
@@ -83,7 +83,7 @@ export default defineComponent({
       })
     };
 
-    function resetShow() {
+    function resetShow() { // 隐藏提示
       show.email = false
       show.password = false
       show.code = false

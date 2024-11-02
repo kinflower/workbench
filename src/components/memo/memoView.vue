@@ -58,7 +58,7 @@
                     <div class="iconfont icon-image" @click="handleConfig('image')"></div>
                     <input class="file_select" type="file" id="file_select" @change="getImage" accept="image/*">
                 </div>
-                <div id="text_content" :style="`height:${height}px`" contenteditable="true" spellcheck="false" @input="changeValue"></div>
+                <div id="text_content" :style="`height:${height}px`" contenteditable="true" spellcheck="false"></div>
             </div>
         </div>
     </transition>
@@ -69,77 +69,37 @@
 
 <script lang="ts">
 import { api_upload } from '@/api/login';
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, type Ref } from 'vue'
 import imgView from '../imgView.vue';
 import { api_insertMemo, api_removeMemo, api_searchMemo, api_selectMemo, api_updateMemo } from '@/api/memo';
+import { drag, resetDrag, type Form, type State } from './type';
 
 export default defineComponent({
     name: 'memoView',
     setup() {
-        const show = ref(false)
-        const list: any = ref([])
-        const type = ref('list')
-        const editType = ref('add')
-        const messageBox: any = ref(null)
-        const dialogView: any = ref(null)
-        const imgView: any = ref(null)
-        const zoom = ref(false)
-        const height = ref(0)
-        const keyword = ref('')
-        const form: any = ref({
+        const show: Ref<boolean> = ref(false)
+        const list: Ref<any> = ref([])
+        const type: Ref<string> = ref('list')
+        const editType: Ref<string> = ref('add')
+        const messageBox: Ref<any> = ref(null)
+        const dialogView: Ref<any> = ref(null)
+        const imgView: Ref<any> = ref(null)
+        const zoom: Ref<boolean> = ref(false)
+        const height: Ref<number> = ref(0)
+        const keyword: Ref<string> = ref('')
+        const form: Ref<Form> = ref({
             title: "",
             content: ""
         })
-        const state: any = ref({
-            'bold': false,
-            'italic': false,
-            'underline': false
+        const state: Ref<State> = ref({
+            bold: false,
+            italic: false,
+            underline: false
         })
-        const src = ref('')
+        const src: Ref<string> = ref('')
         let tmp: any = {}
-        function drag() {
-            const draggable: any = document.getElementById('memo');
-            let active = false;
-            let currentX: any;
-            let currentY: any;
-            let initialX: any;
-            let initialY: any;
-            let xOffset = 0;
-            let yOffset = 0;
-            draggable.onmousedown = (e: any) => {
-                initialX = e.clientX - xOffset;
-                initialY = e.clientY - yOffset;
-                if (e.target === draggable) {
-                    active = true;
-                }
-            }
-            document.onmousemove = (e: any) => {
-                if (active) {
-                    e.preventDefault();
-                    currentX = e.clientX - initialX;
-                    currentY = e.clientY - initialY;
-                    xOffset = currentX;
-                    yOffset = currentY;
-                    draggable.style.transform = "translate3d(" + currentX + "px, " + currentY + "px, 0)"
-                }
-            }
-            document.onmouseup = () => {
-                initialX = currentX;
-                initialY = currentY;
-                active = false;
-            }
-            document.onmouseleave = () => {
-                initialX = currentX;
-                initialY = currentY;
-                active = false;
-            }
-        }
-        function resetDrag() {
-            document.onmousemove = () => {}
-            document.onmouseup = () => {}
-            document.onmouseleave = () => {}
-        }
-        function setZoom() {
+        
+        function setZoom() { // 设置窗口大小
             zoom.value = !zoom.value
             const draggable: any = document.getElementById('memo');
             if(zoom.value) {
@@ -153,7 +113,7 @@ export default defineComponent({
                 height.value = draggable.offsetHeight - 100
             }, 10)
         }
-        function showDialog() {
+        function showDialog() { // 显示弹窗
             show.value = true
             getList()
             setTimeout(() => {
@@ -162,7 +122,7 @@ export default defineComponent({
                 height.value = draggable.offsetHeight - 100
             }, 500)
         }
-        function getList() {
+        function getList() { // 获取备忘录列表
             api_selectMemo().then((res: any) => {
                 list.value = res.message.map((item: any) => {
                     item.content = JSON.parse(item.content)
@@ -174,7 +134,7 @@ export default defineComponent({
                 })
             })
         }
-        function handleAdd() {
+        function handleAdd() { // 新增操作
             type.value = 'edit'
             editType.value = 'add'
             form.value.title = ''
@@ -183,7 +143,7 @@ export default defineComponent({
                 content.innerHTML = ''
             }, 100)
         }
-        function handleEdit(item: any) {
+        function handleEdit(item: any) { // 编辑操作
             form.value = item
             type.value = 'edit'
             editType.value = 'edit'
@@ -203,16 +163,13 @@ export default defineComponent({
             type.value = 'list'
             getList()
         }
-        function handleRemove(item: any) {
+        function handleRemove(item: any) { // 删除操作
             dialogView.value.message = '是否删除所选项?'
             dialogView.value.isVisible = true
             dialogView.value.setData('remove')
             tmp = item
         }
-        function changeValue() {
-            // console.log(e)
-        }
-        function handleSave() {
+        function handleSave() { // 保存操作
             if(!form.value.title) {
                 messageBox.value.open('标题不能为空', 'warn')
                 return
@@ -235,11 +192,10 @@ export default defineComponent({
                 })
             }
         }
-        function handleConfig(flag: string) {
+        function handleConfig(flag: string) { // 工具栏操作
             state.value[flag] = !state.value[flag]
             const selection: any = window.getSelection();
             const range = selection.getRangeAt(0);
-            // console.log(range.endContainer.parentNode.nodeName, range.endContainer.nodeName)
             if(flag == 'image') {
                 document.getElementById('file_select')?.click()
                 tmp = document.createElement('img')
@@ -331,7 +287,7 @@ export default defineComponent({
         return {
             show, list, type, src, form, messageBox, editType, imgView, dialogView, zoom,
             height, keyword,
-            drag, showDialog, handleAdd, handleEdit, back, handleRemove, changeValue,
+            drag, showDialog, handleAdd, handleEdit, back, handleRemove,
             handleSave, handleConfig, getColor, getImage, batchRemove, confirm, setZoom,
             search
         }

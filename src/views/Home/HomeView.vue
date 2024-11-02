@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, type Ref } from 'vue';
 import MemoView from '@/components/memo/memoView.vue';
 export default defineComponent({
     name: 'HomeView',
@@ -25,8 +25,8 @@ export default defineComponent({
                 icon: 'iconfont icon-beiwanglu'
             }
         ])
-        const search = ref('')
-        const memo: any = ref(null)
+        const search: Ref<string> = ref('')
+        const memo: Ref<any> = ref(null)
         function openApp(name: string) {
             switch(name) {
                 case '备忘录':

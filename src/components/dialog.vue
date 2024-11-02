@@ -13,13 +13,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, type Ref } from 'vue'
 export default defineComponent({
     name: "dialogView",
     setup(props, { emit }) {
-        const isVisible = ref(false)
-        const message = ref('是否确定？')
-        const data = ref('')
+        const isVisible: Ref<boolean> = ref(false)
+        const message: Ref<string> = ref('是否确定？')
+        const data: Ref<string> = ref('')
         const setData = (value: string) => {
             data.value = value
         }
