@@ -27,7 +27,7 @@ export default defineComponent({
     name: "HeadView",
     setup () {
         const router = useRouter();
-        const list: Ref = ref([ '个人', '退出' ])
+        const list: Ref = ref([ '个人', '设置', '退出' ])
         const showSelect: Ref<boolean> = ref(false)
         const info: Ref<any> = ref({})
         const dialogView: Ref = ref(null)
@@ -46,6 +46,8 @@ export default defineComponent({
         const handleEvent = (val: string) => { // 事件处理
             if(val == '个人') {
                 router.push('/personage')
+            }else if(val == '设置') {
+                router.push('/setting')
             }else if(val == '退出') {
                 dialogView.value.message = '是否退出当前账号?'
                 dialogView.value.isVisible = true
@@ -122,7 +124,7 @@ img {
     top: 50px;
     right: 10px;
     width: 50px;
-    border-radius: 5px;
+    border-radius: 2px;
     background: #f0e6ff;
     text-align: center;
     font-size: 12px;

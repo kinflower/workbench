@@ -118,4 +118,12 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
 }
+.container {
+  background-color: #f0e6ff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  margin: 100px auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 </style>

@@ -1,8 +1,9 @@
 <template>
     <Transition>
         <div v-if="isVisible" class="modal">
-            <div class="modal-content">
+            <div class="modal-content" :style="`width:${width};`">
                 <div class="message">{{ message }}</div>
+                <slot name="default"></slot>
                 <div class="btn_group">
                     <button types="default" class="confirm" @click="confirm">确定</button>
                     <button types="info" class="cancel" @click="cancel">取消</button>
@@ -16,6 +17,12 @@
 import { defineComponent, ref, type Ref } from 'vue'
 export default defineComponent({
     name: "dialogView",
+    props: {
+        width: {
+            type: String,
+            default: () => '300px'
+        }
+    },
     setup(props, { emit }) {
         const isVisible: Ref<boolean> = ref(false)
         const message: Ref<string> = ref('是否确定？')
@@ -60,7 +67,6 @@ export default defineComponent({
     margin: auto;
     padding: 10px;
     border: 1px solid #888;
-    width: 300px;
 }
 .message {
     font-size: 15px;

@@ -34,6 +34,7 @@ import { useRouter } from 'vue-router';
 import { api_checkAccount, api_register, api_sendCode } from '@/api/login';
 import { generateRandomNumber, objIsNotNull, objIsNullName, validateEmail } from '@/assets/util';
 import type { FormData, Show } from './type';
+import { api_insertSetting } from '@/api/setting';
 
 export default defineComponent({
   name: 'RegisterView',
@@ -75,10 +76,14 @@ export default defineComponent({
       api_register(formData).then((res: any) => {
         localStorage.setItem('token', res.token)
         localStorage.setItem('email', formData.email)
-        router.replace('/')
-        setTimeout(() => {
-          window.location.reload()
-        }, 100)
+        api_insertSetting({email: formData.email}).then(() => {
+          router.replace('/')
+          setTimeout(() => {
+            window.location.reload()
+          }, 100)
+        }).catch(err => {
+          messageBox.value.open(err, 'error')
+        })
       }).catch(err => {
         messageBox.value.open(err, 'error')
       })
@@ -159,5 +164,14 @@ export default defineComponent({
   color: red;
   margin-top: -12px;
   margin-bottom: 10px;
+}
+
+.container {
+  background-color: #f0e6ff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  margin: 100px auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 </style>
