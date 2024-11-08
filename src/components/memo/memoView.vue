@@ -193,9 +193,9 @@ export default defineComponent({
             }
         }
         function handleConfig(flag: string) { // 工具栏操作
-            state.value[flag] = !state.value[flag]
             const selection: any = window.getSelection();
             const range = selection.getRangeAt(0);
+            const span: any = document.createElement('span');
             if(flag == 'image') {
                 document.getElementById('file_select')?.click()
                 tmp = document.createElement('img')
@@ -205,7 +205,8 @@ export default defineComponent({
                 }
                 tmp.style.width = '100px'
                 tmp.style.height = '60px'
-                range.insertNode(tmp);
+                span.appendChild(tmp);
+                range.insertNode(span);
                 return
             }
             if(['h1','h2','h3','h4','h5','h6'].includes(flag)) {
@@ -215,17 +216,24 @@ export default defineComponent({
                 range.insertNode(h);
                 return
             }
-            const span: any = document.createElement('span');
             span.innerText = range.toString()
+            if(flag == 'left' || flag == 'center' || flag == 'right') {
+                span.innerText = range.endContainer.textContent
+                range.endContainer.remove()
+            }
             tmp = span
+            console.log(range, '*')
             switch (flag) {
                 case 'bold':
+                    state.value[flag] = !state.value[flag]
                     span.style.fontWeight = state.value[flag]?'bolder':'normal'
                     break
                 case 'italic':
+                    state.value[flag] = !state.value[flag]
                     span.style.fontStyle = state.value[flag]?'italic':'normal'
                     break
                 case 'underline':
+                    state.value[flag] = !state.value[flag]
                     span.style.textDecoration = state.value[flag]?'underline':'none'
                     break
                 case 'color':

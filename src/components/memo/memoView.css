@@ -181,7 +181,7 @@
 }
 
 .tool_box::-webkit-scrollbar {
-    height: 3px;
+    height: 5px;
 }
 
 .tool_box::-webkit-scrollbar-thumb {
