@@ -16,13 +16,13 @@
         </div>
         
         <div class="content">
-            <div class="item" v-for="(item, index) in appList" :key="index">
+            <div class="item" :style="`width:${setting.column?setting.column:'20%'}`" v-for="(item, index) in appList" :key="index">
                 <div v-if="item.type == 'url'" @click="openApp(item)">
-                    <img v-if="item.imgUrl" class="app_icon" :style="`border-radius: ${setting.radius?setting.radius:'5'}px`" :src="item.imgUrl">
-                    <img v-else class="app_icon" :style="`border-radius: ${setting.radius?setting.radius:'5'}px`" src="../../assets/pic.png">
+                    <img v-if="item.imgUrl" class="app_icon" :style="iconStyle" :src="item.imgUrl">
+                    <img v-else class="app_icon" :style="iconStyle" src="../../assets/pic.png">
                 </div>
-                <div v-else class="icon" :style="`border-radius: ${setting.radius?setting.radius:'5'}px`" :class="item.icon" @click="openApp(item)"></div>
-                <div class="title" :style="`font-size: ${setting.fontSize?setting.fontSize:'16'}px;color:${setting.fontColor?setting.fontColor:'unset'}`">{{ item.appName }}</div>
+                <div v-else class="icon" :style="iconStyle" :class="item.icon" @click="openApp(item)"></div>
+                <div class="title" :style="titleStyle">{{ item.appName }}</div>
             </div>
         </div>
         <div class="memo">
@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, type Ref } from 'vue';
+import { computed, defineComponent, onMounted, ref, type Ref } from 'vue';
 import MemoView from '@/components/memo/memoView.vue';
 import { api_selectApp, api_selectSetting } from '@/api/setting';
 import { useInfoStore } from '@/stores/info';
@@ -59,13 +59,26 @@ export default defineComponent({
             imgUrl: "",
             fontSize: null,
             fontColor: null,
-            radius: null
+            radius: null,
+            size: null,
+            column: null
         })
         const search: Ref<string> = ref('')
         const memo: Ref<any> = ref(null)
         const infoStores: any = useInfoStore()
         const curSearch: Ref<number> = ref(0)
         const showSearch: Ref<boolean> = ref(false)
+
+        const iconStyle = computed(() => {
+            return `border-radius: ${setting.value.radius?setting.value.radius:'5'}px;
+            width:${setting.value.size?setting.value.size:'75'}px;height:${setting.value.size?setting.value.size:'75'}px;`
+        })
+
+        const titleStyle = computed(() => {
+            return `font-size: ${setting.value.fontSize?setting.value.fontSize:'16'}px;
+            color:${setting.value.fontColor?setting.value.fontColor:'unset'}`
+        })
+
         function openApp(item: any) {
             switch(item.type) {
                 case '备忘录':
@@ -104,6 +117,7 @@ export default defineComponent({
         })
         return {
             appList, search, memo, setting, curSearch, searchList, showSearch,
+            iconStyle, titleStyle,
             openApp, setSearch, handleSearch
         }
     },
@@ -177,30 +191,25 @@ export default defineComponent({
 .content {
     display: flex;
     flex-wrap: wrap;
-    width: 80%;
+    width: 60%;
     margin: 30px auto 20px;
 }
 .item {
-    width: 25%;
-    height: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 20px 0;
 }
 .icon {
-    width: 75px;
-    height: 75px;
     background: #6b46c1;
     cursor: pointer;
-    font-size: 45px;
+    font-size: xx-large;
     color: #e9e9e9;
-    text-align: center;
-    padding-top: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .app_icon {
-    width: 75px;
-    height: 75px;
     cursor: pointer;
 }
 .title {

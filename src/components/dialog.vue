@@ -66,11 +66,11 @@ export default defineComponent({
     background-color: #fefefe;
     margin: auto;
     padding: 10px;
-    border: 1px solid #888;
+    border-radius: 5px;
 }
 .message {
     font-size: 15px;
-    margin-top: 10px;
+    margin: 10px;
 }
 
 .btn_group {

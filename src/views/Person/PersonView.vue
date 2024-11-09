@@ -168,13 +168,13 @@ input {
 
 .save_btn {
     position: fixed;
-    right: 10px;
+    right: 80px;
     bottom: 10px;
 }
 
 .back_btn {
     position: fixed;
-    right: 80px;
+    right: 10px;
     bottom: 10px;
 }
 </style>

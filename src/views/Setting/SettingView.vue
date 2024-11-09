@@ -18,7 +18,7 @@
                 <div class="form_group">
                     <div class="form_title">字体大小</div>
                     <div>
-                        <input type="number" v-model="setting.fontSize" placeholder="输入字体大小">
+                        <input type="number" v-model="setting.fontSize" min="10" max="30" placeholder="输入字体大小" @change="limitFontSize">
                     </div>
                 </div>
                 <div class="form_group">
@@ -28,11 +28,27 @@
                     </div>
                 </div>
                 <div class="form_group">
-                    <div class="form_title">图标圆角</div>
+                    <div class="form_title">列数</div>
+                    <input type="radio" id="4" name="gender" value="25%" v-model="setting.column">
+                    <label for="4">4</label><br>
+                    <input type="radio" id="5" name="gender" value="20%" v-model="setting.column">
+                    <label for="5">5</label><br>
+                    <input type="radio" id="6" name="gender" value="16.6%" v-model="setting.column">
+                    <label for="6">6</label><br>
+                </div>
+                <div class="form_group">
+                    <div class="form_title">图标大小</div>
                     <div>
-                        <input type="number" v-model="setting.radius" placeholder="输入图标圆角">
+                        <input type="number" v-model="setting.size" min="40" max="75" placeholder="输入图标大小" @change="limitSize">
                     </div>
                 </div>
+                <div class="form_group">
+                    <div class="form_title">图标圆角</div>
+                    <div>
+                        <input type="number" v-model="setting.radius" min="0" max="50" placeholder="输入图标圆角">
+                    </div>
+                </div>
+                
             </div>
         </div>
         <div class="content" v-show="active == '2'">
@@ -40,7 +56,7 @@
                 <button types="default" @click="addShow">新增</button>
                 <button types="error" @click="batchRemove">删除</button>
             </div>
-            <div class="app_list">
+            <div class="app_list" :style="`height:${listHeight}px`">
                 <div v-for="(item, index) in appList" :key="index">
                     <div class="app_item" v-if="item.type == 'search'">
                         <input type="checkbox" v-model="item.chose">
@@ -64,9 +80,9 @@
                 <button types="default" @click="addShow">新增</button>
                 <button types="error" @click="batchRemove">删除</button>
             </div>
-            <div class="app_list">
+            <div class="app_list" :style="`height:${listHeight}px`">
                 <div v-for="(item, index) in appList" :key="index">
-                    <div class="app_item" v-if="item.type == 'url'">
+                    <div class="app_item" v-if="item.type == 'url'" :style="index==appList.length-1?'':''">
                         <input type="checkbox" v-model="item.chose">
                         <div style="width: 20%;">{{ item.appName }}</div>
                         <div style="width: 40%;">{{ item.url }}</div>
@@ -118,7 +134,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount, ref, type Ref } from 'vue'
+import { defineComponent, onBeforeMount, onMounted, ref, type Ref } from 'vue'
 import type { AppForm, Setting } from './setting';
 import { api_upload } from '@/api/login';
 import router from '@/router';
@@ -131,10 +147,11 @@ export default defineComponent({
         const active: Ref<string> = ref('1')
         const showSelect: Ref<boolean> = ref(false)
         const messageBox: Ref<any> = ref(null)
-        const dialogView: Ref = ref(null)
-        const dialogViewRemove: Ref = ref(null)
-        const removeType: Ref = ref('')
-        const hint: Ref = ref('')
+        const dialogView: Ref<any> = ref(null)
+        const dialogViewRemove: Ref<any> = ref(null)
+        const removeType: Ref<string> = ref('')
+        const hint: Ref<string> = ref('')
+        const listHeight: Ref<number> = ref(500)
         const infoStores: any = useInfoStore()
         const appForm: Ref<AppForm> = ref({
             appName: '',
@@ -148,13 +165,15 @@ export default defineComponent({
             imgUrl: "",
             fontSize: null,
             fontColor: null,
-            radius: null
+            radius: null,
+            size: null,
+            column: null
         })
         const appList: Ref<any> = ref([])
         function selectBgImg() {
             document.getElementById('bgImg')?.click()
         }
-        function reset() {
+        function reset(isEdit: boolean) {
             appForm.value = {
                 appName: '',
                 url: '',
@@ -166,11 +185,11 @@ export default defineComponent({
             if(active.value == '2') {
                 appForm.value.type = 'search'
                 hint.value = '搜索'
-                dialogView.value.message = '新增搜索'
+                dialogView.value.message = isEdit?'编辑搜索':'新增搜索'
             }else if(active.value == '3') {
                 appForm.value.type = 'url'
                 hint.value = '应用'
-                dialogView.value.message = '新增应用'
+                dialogView.value.message = isEdit?'编辑应用':'新增应用'
             }
         }
         function upload(e: any) { // 上传图片
@@ -203,11 +222,11 @@ export default defineComponent({
             router.back()
         }
         function addShow() {
-            reset()
+            reset(false)
             dialogView.value.isVisible = true
         }
         function editShow(item: any) {
-            reset()
+            reset(true)
             appForm.value = item
             dialogView.value.isVisible = true
         }
@@ -260,15 +279,34 @@ export default defineComponent({
                 appForm.value.imgUrl = res.file
             })
         }
+        function limitSize(e: any) {
+            if(parseInt(e.target.value) < 40) {
+                e.target.value = '40'
+            }
+            if(parseInt(e.target.value) > 75) {
+                e.target.value = '75'
+            }
+        }
+        function limitFontSize(e: any) {
+            if(parseInt(e.target.value) < 10) {
+                e.target.value = '10'
+            }
+            if(parseInt(e.target.value) > 30) {
+                e.target.value = '30'
+            }
+        }
         onBeforeMount(() => {
             getSetting()
             getApp()
         })
+        onMounted(() => {
+            listHeight.value = window.screen.availHeight - 450
+        })
         return {
             active, setting, showSelect, messageBox, appList, dialogView,
-            appForm, dialogViewRemove, hint,
+            appForm, dialogViewRemove, hint, listHeight,
             selectBgImg, upload, back, save, confirm, addShow, batchRemove,
-            handleRemove, editShow, addImg, setImg, remove
+            handleRemove, editShow, addImg, setImg, remove, limitSize, limitFontSize
         }
     }
 })
@@ -393,8 +431,18 @@ input {
 
 .app_list {
     margin: 0 10px;
-    border-bottom: 1px solid #e6daf8;
+    border-top: 1px solid #e6daf8;
+    overflow: scroll;
 }
+.app_list::-webkit-scrollbar {
+    width: 5px;
+}
+
+.app_list::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: #c7bae4;
+}
+
 
 .app_item {
     display: flex;
@@ -403,7 +451,7 @@ input {
     padding-top: 5px;
     padding-left: 10px;
     border: 1px solid #e6daf8;
-    border-bottom: none;
+    border-top: none;
 }
 
 #appImg {
