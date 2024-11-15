@@ -215,6 +215,7 @@ export default defineComponent({
 .title {
     margin-top: 5px;
     font-weight: bolder;
+    text-shadow: 0 0 5px #331677;
 }
 .icon:hover {
     filter: opacity(0.9);

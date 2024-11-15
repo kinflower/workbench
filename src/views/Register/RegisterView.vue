@@ -1,4 +1,5 @@
 <template>
+  <div class="bg"></div>
   <div class="container">
     <h1 class="login_title">练习汇总平台</h1>
     <div class="form-group">
@@ -137,6 +138,18 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../../assets/bg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: blur(1px);
+  z-index: 0;
+}
 .email,
 .password,
 .register {
@@ -171,7 +184,9 @@ export default defineComponent({
   padding: 20px;
   border-radius: 8px;
   width: 300px;
-  margin: 100px auto;
+  margin: 150px auto;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
 }
 </style>

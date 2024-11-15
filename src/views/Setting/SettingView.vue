@@ -1,5 +1,5 @@
 <template>
-    <div class="set_container">
+    <div id="set_container">
         <div class="sidebar">
             <div class="item" :class="active == '1' ? 'active' : ''" @click="active = '1'">主页样式</div>
             <div class="item" :class="active == '2' ? 'active' : ''" @click="active = '2'">输入框配置</div>
@@ -60,9 +60,9 @@
                 <div v-for="(item, index) in appList" :key="index">
                     <div class="app_item" v-if="item.type == 'search'">
                         <input type="checkbox" v-model="item.chose">
-                        <div style="width: 20%;">{{ item.appName }}</div>
-                        <div style="width: 40%;">{{ item.url }}</div>
-                        <div style="width: 10%;">
+                        <div style="width: 100px;white-space: nowrap;">{{ item.appName }}</div>
+                        <div style="width: 400px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{ item.url }}</div>
+                        <div style="width: 100px;margin-left: 10px;">
                             <img class="app_img" v-if="item.imgUrl" :src="item.imgUrl">
                             <img class="app_img" v-else src="../../assets/pic.png">
                         </div>
@@ -300,7 +300,7 @@ export default defineComponent({
             getApp()
         })
         onMounted(() => {
-            listHeight.value = window.screen.availHeight - 450
+            listHeight.value = document.body.scrollHeight
         })
         return {
             active, setting, showSelect, messageBox, appList, dialogView,
@@ -313,7 +313,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.set_container {
+#set_container {
     display: flex;
     width: 100%;
 }
@@ -427,6 +427,7 @@ input {
     justify-content: space-between;
     width: 110px;
     margin: 20px;
+    white-space: nowrap;
 }
 
 .app_list {
@@ -436,6 +437,7 @@ input {
 }
 .app_list::-webkit-scrollbar {
     width: 5px;
+    height: 5px;
 }
 
 .app_list::-webkit-scrollbar-thumb {
@@ -452,6 +454,7 @@ input {
     padding-left: 10px;
     border: 1px solid #e6daf8;
     border-top: none;
+    min-width: 800px;
 }
 
 #appImg {
