@@ -222,7 +222,6 @@ export default defineComponent({
                 range.endContainer.remove()
             }
             tmp = span
-            console.log(range, '*')
             switch (flag) {
                 case 'bold':
                     state.value[flag] = !state.value[flag]

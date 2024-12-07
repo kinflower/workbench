@@ -25,3 +25,14 @@ export function validateEmail(email: string) {
     const re: any = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
+// 颜色格式化
+export function rgbToHex(r: number, g: number, b: number) {
+    const rHex: string = (r < 16 ? '0' : '') + Math.max(0, Math.min(255, Math.round(r))).toString(16);
+    const gHex: string = (g < 16 ? '0' : '') + Math.max(0, Math.min(255, Math.round(g))).toString(16);
+    const bHex: string = (b < 16 ? '0' : '') + Math.max(0, Math.min(255, Math.round(b))).toString(16);
+    return `#${rHex}${gHex}${bHex}`;
+}
+export function rgbStringToHex(rgbString: string) {
+    const [, red, green, blue]: any = rgbString.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+    return rgbToHex(parseInt(red), parseInt(green), parseInt(blue));
+}
