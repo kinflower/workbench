@@ -37,6 +37,7 @@ import MemoView from '@/components/memo/memoView.vue';
 import { api_selectApp, api_selectSetting } from '@/api/setting';
 import { useInfoStore } from '@/stores/info';
 import type { Setting } from './type';
+import { useRouter } from 'vue-router';
 export default defineComponent({
     name: 'HomeView',
     setup() {
@@ -45,6 +46,11 @@ export default defineComponent({
                 appName: '备忘录',
                 icon: 'iconfont icon-beiwanglu',
                 type: '备忘录'
+            },
+            {
+                appName: '立体房间',
+                icon: 'iconfont icon-beiwanglu',
+                type: '立体房间'
             }
         ])
         const searchList: Ref<any> = ref([
@@ -68,6 +74,7 @@ export default defineComponent({
         const infoStores: any = useInfoStore()
         const curSearch: Ref<number> = ref(0)
         const showSearch: Ref<boolean> = ref(false)
+        const router = useRouter()
 
         const iconStyle = computed(() => {
             return `border-radius: ${setting.value.radius?setting.value.radius:'5'}px;
@@ -83,6 +90,9 @@ export default defineComponent({
             switch(item.type) {
                 case '备忘录':
                     memo.value.showDialog()
+                    break
+                case '立体房间':
+                    router.push('/room')
                     break
                 case 'url':
                     window.open(item.url, '_blank')
