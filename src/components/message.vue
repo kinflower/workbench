@@ -66,6 +66,7 @@ export default defineComponent({
     left: 0;
     right: 0;
     width: 300px;
+    z-index: 100;
     margin: 10px auto;
     padding: 15px;
     display: flex;

@@ -10,7 +10,8 @@
                 <div class="form_group">
                     <div class="form_title">背景图片</div>
                     <div>
-                        <img class="bg_img" v-if="setting.imgUrl" :src="setting.imgUrl" alt="bgImg" @click="selectBgImg">
+                        <img class="bg_img" v-if="setting.imgUrl" :src="setting.imgUrl" alt="bgImg"
+                            @click="selectBgImg">
                         <img class="bg_img" v-else src="../../assets/pic.png" alt="bgImg" @click="selectBgImg">
                         <input type="file" id="bgImg" accept="image/*" @change="upload">
                     </div>
@@ -18,7 +19,8 @@
                 <div class="form_group">
                     <div class="form_title">字体大小</div>
                     <div>
-                        <input type="number" v-model="setting.fontSize" min="10" max="30" placeholder="输入字体大小" @change="limitFontSize">
+                        <input type="number" v-model="setting.fontSize" min="10" max="30" placeholder="输入字体大小"
+                            @change="limitFontSize">
                     </div>
                 </div>
                 <div class="form_group">
@@ -39,7 +41,8 @@
                 <div class="form_group">
                     <div class="form_title">图标大小</div>
                     <div>
-                        <input type="number" v-model="setting.size" min="40" max="75" placeholder="输入图标大小" @change="limitSize">
+                        <input type="number" v-model="setting.size" min="40" max="75" placeholder="输入图标大小"
+                            @change="limitSize">
                     </div>
                 </div>
                 <div class="form_group">
@@ -48,7 +51,7 @@
                         <input type="number" v-model="setting.radius" min="0" max="50" placeholder="输入图标圆角">
                     </div>
                 </div>
-                
+
             </div>
         </div>
         <div class="content" v-show="active == '2'">
@@ -56,12 +59,13 @@
                 <button types="default" @click="addShow">新增</button>
                 <button types="error" @click="batchRemove">删除</button>
             </div>
-            <div class="app_list" :style="`height:${listHeight}px`">
+            <div class="app_list">
                 <div v-for="(item, index) in appList" :key="index">
                     <div class="app_item" v-if="item.type == 'search'">
                         <input type="checkbox" v-model="item.chose">
                         <div style="width: 100px;white-space: nowrap;">{{ item.appName }}</div>
-                        <div style="width: 400px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{ item.url }}</div>
+                        <div style="width: 400px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{
+                            item.url }}</div>
                         <div style="width: 100px;margin-left: 10px;">
                             <img class="app_img" v-if="item.imgUrl" :src="item.imgUrl">
                             <img class="app_img" v-else src="../../assets/pic.png">
@@ -70,7 +74,7 @@
                             <button types="default" @click="editShow(item)">编辑</button>
                             <button types="error" @click="handleRemove(item)">删除</button>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -80,9 +84,9 @@
                 <button types="default" @click="addShow">新增</button>
                 <button types="error" @click="batchRemove">删除</button>
             </div>
-            <div class="app_list" :style="`height:${listHeight}px`">
+            <div class="app_list">
                 <div v-for="(item, index) in appList" :key="index">
-                    <div class="app_item" v-if="item.type == 'url'" :style="index==appList.length-1?'':''">
+                    <div class="app_item" v-if="item.type == 'url'" :style="index == appList.length - 1 ? '' : ''">
                         <input type="checkbox" v-model="item.chose">
                         <div style="width: 20%;">{{ item.appName }}</div>
                         <div style="width: 40%;">{{ item.url }}</div>
@@ -94,7 +98,7 @@
                             <button types="default" @click="editShow(item)">编辑</button>
                             <button types="error" @click="handleRemove(item)">删除</button>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -118,12 +122,12 @@
                 <input type="radio" id="url" name="gender" value="url" v-model="appForm.uploadType">
                 <label for="url">链接</label><br>
             </div>
-            <div v-if="appForm.uploadType=='file'" class="form_group">
+            <div v-if="appForm.uploadType == 'file'" class="form_group">
                 <div class="form_title">图标上传</div>
                 <img class="app_img" v-if="appForm.imgUrl" :src="appForm.imgUrl" @click="addImg">
                 <img class="app_img" v-else src="../../assets/pic.png" @click="addImg">
             </div>
-            <div v-else-if="appForm.uploadType=='url'" class="form_group">
+            <div v-else-if="appForm.uploadType == 'url'" class="form_group">
                 <div class="form_title">图标链接</div>
                 <input v-model="appForm.imgUrl" placeholder="输入链接地址">
             </div>
@@ -151,7 +155,6 @@ export default defineComponent({
         const dialogViewRemove: Ref<any> = ref(null)
         const removeType: Ref<string> = ref('')
         const hint: Ref<string> = ref('')
-        const listHeight: Ref<number> = ref(500)
         const infoStores: any = useInfoStore()
         const appForm: Ref<AppForm> = ref({
             appName: '',
@@ -182,14 +185,14 @@ export default defineComponent({
                 type: '',
                 chose: false
             }
-            if(active.value == '2') {
+            if (active.value == '2') {
                 appForm.value.type = 'search'
                 hint.value = '搜索'
-                dialogView.value.message = isEdit?'编辑搜索':'新增搜索'
-            }else if(active.value == '3') {
+                dialogView.value.message = isEdit ? '编辑搜索' : '新增搜索'
+            } else if (active.value == '3') {
                 appForm.value.type = 'url'
                 hint.value = '应用'
-                dialogView.value.message = isEdit?'编辑应用':'新增应用'
+                dialogView.value.message = isEdit ? '编辑应用' : '新增应用'
             }
         }
         function upload(e: any) { // 上传图片
@@ -200,7 +203,7 @@ export default defineComponent({
             })
         }
         function getSetting() {
-            api_selectSetting({email: infoStores.info.email}).then((res: any) => {
+            api_selectSetting({ email: infoStores.info.email }).then((res: any) => {
                 setting.value = res.message[0]
             })
         }
@@ -231,7 +234,7 @@ export default defineComponent({
             dialogView.value.isVisible = true
         }
         function batchRemove() {
-            if(appList.value.filter((item: any) => item.chose).length==0) {
+            if (appList.value.filter((item: any) => item.chose).length == 0) {
                 messageBox.value.open('请选择删除项', 'warn')
                 return
             }
@@ -246,9 +249,9 @@ export default defineComponent({
         }
         function remove() {
             let ids = []
-            if(removeType.value == 'batch') {
+            if (removeType.value == 'batch') {
                 ids = appList.value.filter((item: any) => item.chose).map((item: any) => item.id)
-            }else {
+            } else {
                 ids = [removeType.value]
             }
             api_removeApp(ids).then((res: any) => {
@@ -257,12 +260,12 @@ export default defineComponent({
             })
         }
         function confirm() {
-            if(appForm.value.id) {
+            if (appForm.value.id) {
                 api_updateApp(appForm.value).then((res: any) => {
                     messageBox.value.open(res.message, 'success')
                     getApp()
                 })
-            }else {
+            } else {
                 api_insertApp(appForm.value).then((res: any) => {
                     messageBox.value.open(res.message, 'success')
                     getApp()
@@ -280,18 +283,18 @@ export default defineComponent({
             })
         }
         function limitSize(e: any) {
-            if(parseInt(e.target.value) < 40) {
+            if (parseInt(e.target.value) < 40) {
                 e.target.value = '40'
             }
-            if(parseInt(e.target.value) > 75) {
+            if (parseInt(e.target.value) > 75) {
                 e.target.value = '75'
             }
         }
         function limitFontSize(e: any) {
-            if(parseInt(e.target.value) < 10) {
+            if (parseInt(e.target.value) < 10) {
                 e.target.value = '10'
             }
-            if(parseInt(e.target.value) > 30) {
+            if (parseInt(e.target.value) > 30) {
                 e.target.value = '30'
             }
         }
@@ -299,12 +302,9 @@ export default defineComponent({
             getSetting()
             getApp()
         })
-        onMounted(() => {
-            listHeight.value = document.body.scrollHeight
-        })
         return {
             active, setting, showSelect, messageBox, appList, dialogView,
-            appForm, dialogViewRemove, hint, listHeight,
+            appForm, dialogViewRemove, hint,
             selectBgImg, upload, back, save, confirm, addShow, batchRemove,
             handleRemove, editShow, addImg, setImg, remove, limitSize, limitFontSize
         }
@@ -313,6 +313,24 @@ export default defineComponent({
 </script>
 
 <style scoped>
+@media screen and (max-width: 800px) {
+    .app_list {
+        margin: 0 10px;
+        border-top: 1px solid #e6daf8;
+        overflow: scroll;
+        height: 70vh;
+    }
+}
+
+@media screen and (min-width: 800px) {
+    .app_list {
+        margin: 0 10px;
+        border-top: 1px solid #e6daf8;
+        overflow: scroll;
+        height: 80vh;
+    }
+}
+
 #set_container {
     display: flex;
     width: 100%;
@@ -388,6 +406,7 @@ label {
     width: 60px;
     height: 60px;
     box-shadow: 0 0 5px #e6daf8;
+    background-color: white;
     cursor: pointer;
 }
 
@@ -430,11 +449,6 @@ input {
     white-space: nowrap;
 }
 
-.app_list {
-    margin: 0 10px;
-    border-top: 1px solid #e6daf8;
-    overflow: scroll;
-}
 .app_list::-webkit-scrollbar {
     width: 5px;
     height: 5px;

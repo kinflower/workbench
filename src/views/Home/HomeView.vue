@@ -17,42 +17,26 @@
         
         <div class="content">
             <div class="item" :style="`width:${setting.column?setting.column:'20%'}`" v-for="(item, index) in appList" :key="index">
-                <div v-if="item.type == 'url'" @click="openApp(item)">
+                <div @click="openApp(item)">
                     <img v-if="item.imgUrl" class="app_icon" :style="iconStyle" :src="item.imgUrl">
                     <img v-else class="app_icon" :style="iconStyle" src="../../assets/pic.png">
                 </div>
-                <div v-else class="icon" :style="iconStyle" :class="item.icon" @click="openApp(item)"></div>
                 <div class="title" :style="titleStyle">{{ item.appName }}</div>
             </div>
-        </div>
-        <div class="memo">
-            <MemoView ref="memo"></MemoView>
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref, type Ref } from 'vue';
-import MemoView from '@/components/memo/memoView.vue';
 import { api_selectApp, api_selectSetting } from '@/api/setting';
 import { useInfoStore } from '@/stores/info';
 import type { Setting } from './type';
-import { useRouter } from 'vue-router';
+import { api_personalInfo } from '@/api/login';
 export default defineComponent({
     name: 'HomeView',
     setup() {
-        const appList: Ref<any> = ref([
-            {
-                appName: '备忘录',
-                icon: 'iconfont icon-beiwanglu',
-                type: '备忘录'
-            },
-            {
-                appName: '立体房间',
-                icon: 'iconfont icon-beiwanglu',
-                type: '立体房间'
-            }
-        ])
+        const appList: Ref<any> = ref([])
         const searchList: Ref<any> = ref([
             {
                 appName: '',
@@ -70,11 +54,9 @@ export default defineComponent({
             column: null
         })
         const search: Ref<string> = ref('')
-        const memo: Ref<any> = ref(null)
         const infoStores: any = useInfoStore()
         const curSearch: Ref<number> = ref(0)
         const showSearch: Ref<boolean> = ref(false)
-        const router = useRouter()
 
         const iconStyle = computed(() => {
             return `border-radius: ${setting.value.radius?setting.value.radius:'5'}px;
@@ -87,17 +69,7 @@ export default defineComponent({
         })
 
         function openApp(item: any) {
-            switch(item.type) {
-                case '备忘录':
-                    memo.value.showDialog()
-                    break
-                case '立体房间':
-                    router.push('/room')
-                    break
-                case 'url':
-                    window.open(item.url, '_blank')
-                    break
-            }
+            window.open(item.url, '_blank')
         }
         function setSearch(index: number) {
             curSearch.value = index
@@ -110,6 +82,21 @@ export default defineComponent({
             window.open(searchList.value[curSearch.value].url + val.target.value, '_blank')
         }
         onMounted(() => {
+            if(infoStores.info.email) {
+                api_selectSetting({email: infoStores.info.email}).then((res: any) => {
+                    setting.value = res.message[0]
+                    const bg: any = document.getElementById('bg')?.style
+                    bg.backgroundImage = `url('${setting.value.imgUrl}')`
+                })
+            }else {
+                api_personalInfo().then((res: any) => {
+                    api_selectSetting({email: res.message.email}).then((res: any) => {
+                        setting.value = res.message[0]
+                        const bg: any = document.getElementById('bg')?.style
+                        bg.backgroundImage = `url('${setting.value.imgUrl}')`
+                    })
+                })
+            }
             api_selectSetting({email: infoStores.info.email}).then((res: any) => {
                 setting.value = res.message[0]
                 const bg: any = document.getElementById('bg')?.style
@@ -126,15 +113,76 @@ export default defineComponent({
             })
         })
         return {
-            appList, search, memo, setting, curSearch, searchList, showSearch,
+            appList, search, setting, curSearch, searchList, showSearch,
             iconStyle, titleStyle,
             openApp, setSearch, handleSearch
         }
-    },
-    components: {MemoView}
+    }
 });
 </script>
 <style scoped>
+@media screen and (max-width: 800px) {
+    .app_icon {
+        width: 30px !important;
+        height: 30px !important;
+        border-radius: 2px !important;
+        cursor: pointer;
+        background-color: white;
+    }
+    .title {
+        margin-top: 5px;
+        font-weight: bolder;
+        text-shadow: 0 0 5px #331677;
+        font-size: 12px !important;
+    }
+    .content {
+        display: flex;
+        flex-wrap: wrap;
+        width: 90% !important;
+        margin: 30px auto 20px;
+    }
+    .search input {
+        padding: 10px;
+        width: 200px;
+        display: block;
+        margin-left: 5px;
+    }
+    .select {
+        position: absolute;
+        top: 45px;
+        margin-left: -225px;
+    }
+}
+
+@media screen and (min-width: 800px) {
+    .app_icon {
+        cursor: pointer;
+        background-color: white;
+    }
+    .title {
+        margin-top: 5px;
+        font-weight: bolder;
+        text-shadow: 0 0 5px #331677;
+    }
+    .content {
+        display: flex;
+        flex-wrap: wrap;
+        width: 60%;
+        margin: 30px auto 20px;
+    }
+    .search input {
+        padding: 10px;
+        width: 350px;
+        display: block;
+        margin-left: 5px;
+    }
+    .select {
+        position: absolute;
+        top: 45px;
+        margin-left: -375px;
+    }
+}
+
 #bg {
     background: #dfdfdf;
     position: absolute;
@@ -154,17 +202,6 @@ export default defineComponent({
     display: flex;
     align-items: center;
     justify-content: center;
-}
-.search input {
-    padding: 10px;
-    width: 350px;
-    display: block;
-    margin-left: 5px;
-}
-.select {
-    position: absolute;
-    top: 45px;
-    margin-left: -375px;
 }
 .triangle {
     position: absolute;
@@ -198,36 +235,10 @@ export default defineComponent({
 .active {
     background: #cfcfcf;
 }
-.content {
-    display: flex;
-    flex-wrap: wrap;
-    width: 60%;
-    margin: 30px auto 20px;
-}
 .item {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 20px 0;
-}
-.icon {
-    background: #6b46c1;
-    cursor: pointer;
-    font-size: xx-large;
-    color: #e9e9e9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.app_icon {
-    cursor: pointer;
-}
-.title {
-    margin-top: 5px;
-    font-weight: bolder;
-    text-shadow: 0 0 5px #331677;
-}
-.icon:hover {
-    filter: opacity(0.9);
 }
 </style>

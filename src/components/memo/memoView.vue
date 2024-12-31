@@ -29,7 +29,7 @@
                             <transition>
                                 <div v-if="item.showSelect" class="select">
                                     <div class="triangle"></div>
-                                    <div @click.stop="handleRemove(item)">删除</div>
+                                    <div class="remove" @click.stop="handleRemove(item)">删除</div>
                                 </div>
                             </transition>
                         </div>
