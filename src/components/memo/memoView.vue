@@ -1,7 +1,7 @@
 <template>
     <transition>
-        <div v-if="show" :class="zoom?'memo_container_max':'memo_container'" id="memo">
-            <div class="head">
+        <div v-if="show" :class="zoom?'memo_container_max':'memo_container'">
+            <div class="head" id="memo">
                 <div class="head_title">备忘录</div>
                 <div class="tool_group">
                     <div v-if="type == 'list'" class="iconfont icon-shanchu" @click="batchRemove"></div>

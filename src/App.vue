@@ -9,18 +9,21 @@
 import { defineComponent, onBeforeMount, ref, type Ref } from 'vue'
 
 export default defineComponent({
-  setup () {
+  setup() {
     const show: Ref<boolean> = ref(true)
-      onBeforeMount(() => {
-        const token = localStorage.getItem('token')
-        if(token) {
+    function checkLogin() {
+      const token = localStorage.getItem('token')
+        if (token) {
           show.value = true
-        }else {
+        } else {
           show.value = false
         }
-      })
+    }
+    onBeforeMount(() => {
+      checkLogin()
+    })
     return {
-      show
+      show, checkLogin
     }
   }
 })

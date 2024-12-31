@@ -32,7 +32,8 @@
             <div class="form_group" v-if="isChange">
                 <div class="form_title">验证码</div>
                 <input v-model="info.code" type="password" placeholder="输入验证码">
-                <button types="default" class="change_btn" @click="sendCode" :disabled="!canSendCode">{{ timer ? `已发送${timer}s` : '发送验证码' }}</button>
+                <button types="default" class="change_btn" @click="sendCode" :disabled="!canSendCode">{{ timer ?
+                    `已发送${timer}s` : '发送验证码' }}</button>
             </div>
         </div>
         <button types="info" class="back_btn" @click="back">返回</button>
@@ -87,7 +88,7 @@ export default defineComponent({
             })
         }
         const save = () => { // 保存个人信息
-            if(info.value.newPassword) {
+            if (info.value.newPassword) {
                 info.value.newPassword = btoa('pass' + btoa(info.value.newPassword) + 'word').split('').reverse().join('')
             }
             api_updateInfo(info.value).then((res: any) => {
@@ -176,5 +177,18 @@ input {
     position: fixed;
     right: 10px;
     bottom: 10px;
+}
+
+input {
+    padding: 5px;
+    border-radius: 4px;
+    outline: none;
+    border: 1px solid #fff;
+    transition-duration: 500ms;
+}
+
+input:focus {
+    border: 1px solid #6b46c1;
+    transition-duration: 500ms;
 }
 </style>

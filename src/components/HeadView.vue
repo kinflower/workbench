@@ -8,6 +8,7 @@
                     <template #dropdown>
                         <el-dropdown-menu>
                             <el-dropdown-item @click="handleNav('/memo')">备忘录</el-dropdown-item>
+                            <el-dropdown-item @click="handleNav('/todo')">待办</el-dropdown-item>
                             <el-dropdown-item @click="handleNav('/room')">立体房间</el-dropdown-item>
                         </el-dropdown-menu>
                     </template>
@@ -25,9 +26,8 @@
             </Transition>
         </div>
         <dialogView ref="dialogView" @confirm="confirm"></dialogView>
-        <div class="memo">
-            <MemoView ref="memo"></MemoView>
-        </div>
+        <MemoView ref="memo"></MemoView>
+        <todoView ref="todo"></todoView>
     </div>
 </template>
 
@@ -37,15 +37,17 @@ import { useInfoStore } from '@/stores/info';
 import { defineComponent, onBeforeMount, ref } from 'vue'
 import { useRouter } from 'vue-router';
 import MemoView from '@/components/memo/memoView.vue';
+import todoView from '@/components/todo/todoView.vue';
 export default defineComponent({
     name: "HeadView",
     setup() {
         const router = useRouter();
         const list  = ref(['个人', '设置', '退出'])
         const showSelect  = ref(false)
-        const info  = ref({})
+        const info: any = ref({})
         const dialogView: any = ref(null)
         const memo: any  = ref(null)
+        const todo: any  = ref(null)
         const show = ref(true)
         const infoStores = useInfoStore()
         onBeforeMount(() => {
@@ -58,7 +60,6 @@ export default defineComponent({
                     showSelect.value = false
                 }
             })
-            console.log(navigator.platform)
         })
         const handleEvent = (val: string) => { // 事件处理
             if (val == '个人') {
@@ -79,6 +80,9 @@ export default defineComponent({
             if(url == '/memo') {
                 memo.value.showDialog()
                 return
+            }else if(url == '/todo') {
+                todo.value.showDialog()
+                return
             }
             router.push(url)
         }
@@ -89,7 +93,7 @@ export default defineComponent({
             })
         }
         return {
-            list, showSelect, dialogView, info, memo, infoStores, show,
+            list, showSelect, dialogView, info, memo, infoStores, show, todo,
             handleEvent, confirm, handleNav, getPersonalInfo
 
         };
@@ -99,7 +103,7 @@ export default defineComponent({
             this.getPersonalInfo()
         }
     },
-    components: {MemoView}
+    components: {MemoView, todoView}
 })
 </script>
 

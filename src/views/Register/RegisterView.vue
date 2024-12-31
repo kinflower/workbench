@@ -3,13 +3,15 @@
   <div class="container">
     <h1 class="login_title">练习汇总平台</h1>
     <div class="form-group">
-      <input class="email" type="email" v-model="formData.email" placeholder="请输入邮箱" autocomplete="off" @change="checkAccount">
+      <input class="email" type="email" v-model="formData.email" placeholder="请输入邮箱" autocomplete="off"
+        @change="checkAccount">
     </div>
     <div class="title" v-show="show.email">邮箱不能为空</div>
     <div class="title" v-show="isRegister">当前账号已注册，可以直接登录</div>
     <div class="form-group">
       <input class="code" placeholder="请输入验证码" v-model="formData.code">
-      <button types="default" class="sendCode" @click="sendCode" :disabled="!canSendCode">{{ timer ? `已发送${timer}s` : '发送验证码'
+      <button types="default" class="sendCode" @click="sendCode" :disabled="!canSendCode">{{ timer ? `已发送${timer}s` :
+        '发送验证码'
         }}</button>
     </div>
     <div class="title" v-show="show.code">验证码不能为空</div>
@@ -60,28 +62,28 @@ export default defineComponent({
     const isRegister: Ref<boolean> = ref(false)
 
     function register() { // 注册事件
-      if(isRegister.value) {
+      if (isRegister.value) {
         messageBox.value.open('当前账号已注册，可以直接登录', 'warn')
         return
       }
       resetShow()
       if (objIsNotNull(formData)) {
-        objIsNullName(formData).forEach(item => show[item]=true)
+        objIsNullName(formData).forEach(item => show[item] = true)
         messageBox.value.open('必填项不能为空', 'warn')
         return
       }
-      if(formData.password != formData.tmp_password) {
+      if (formData.password != formData.tmp_password) {
         messageBox.value.open('两次密码输入不一致', 'warn')
       }
       formData.password = btoa('pass' + btoa(formData.password) + 'word').split('').reverse().join('')
       api_register(formData).then((res: any) => {
         localStorage.setItem('token', res.token)
         localStorage.setItem('email', formData.email)
-        api_insertSetting({email: formData.email}).then(() => {
+        api_insertSetting({ email: formData.email }).then(() => {
           router.replace('/')
           setTimeout(() => {
             window.location.reload()
-          }, 100)
+          }, 200)
         }).catch(err => {
           messageBox.value.open(err, 'error')
         })
@@ -91,7 +93,7 @@ export default defineComponent({
     }
 
     function sendCode() { // 发送验证码
-      if(!validateEmail(formData.email)) {
+      if (!validateEmail(formData.email)) {
         messageBox.value.open('邮箱验证有误', 'warn')
         return
       }
@@ -105,7 +107,7 @@ export default defineComponent({
         }
       }, 1000);
       var s = generateRandomNumber(14) + btoa(generateRandomNumber(6))
-      api_sendCode({code: s, email: formData.email}).then(() => {
+      api_sendCode({ code: s, email: formData.email }).then(() => {
         messageBox.value.open('验证码发送成功', 'success')
       })
     }
@@ -150,6 +152,7 @@ export default defineComponent({
   filter: blur(1px);
   z-index: 0;
 }
+
 .email,
 .password,
 .register {
@@ -188,5 +191,18 @@ export default defineComponent({
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: relative;
   z-index: 1;
+}
+
+input {
+  padding: 5px;
+  border-radius: 4px;
+  outline: none;
+  border: 1px solid #fff;
+  transition-duration: 500ms;
+}
+
+input:focus {
+  border: 1px solid #6b46c1;
+  transition-duration: 500ms;
 }
 </style>

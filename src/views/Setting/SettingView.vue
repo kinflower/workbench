@@ -426,7 +426,17 @@ label {
 }
 
 input {
+    padding: 5px;
+    border-radius: 4px;
+    outline: none;
+    border: 1px solid #fff;
     background: #f6f2fc;
+    transition-duration: 500ms;
+}
+
+input:focus {
+    border: 1px solid #6b46c1;
+    transition-duration: 500ms;
 }
 
 .save_btn {

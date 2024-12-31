@@ -8,7 +8,8 @@
     <div class="title" v-show="show.email">邮箱不能为空</div>
     <div class="form-group">
       <input class="code" placeholder="请输入验证码" v-model="formData.code">
-      <button types="default" class="sendCode" @click="sendCode" :disabled="!canSendCode">{{ timer ? `已发送${timer}s` : '发送验证码'
+      <button types="default" class="sendCode" @click="sendCode" :disabled="!canSendCode">{{ timer ? `已发送${timer}s` :
+        '发送验证码'
         }}</button>
     </div>
     <div class="title" v-show="show.code">验证码不能为空</div>
@@ -50,7 +51,7 @@ export default defineComponent({
     const router = useRouter();
 
     function sendCode() { // 发送验证码
-      if(!validateEmail(formData.email)) {
+      if (!validateEmail(formData.email)) {
         messageBox.value.open('邮箱验证有误', 'warn')
         return
       }
@@ -64,7 +65,7 @@ export default defineComponent({
         }
       }, 1000);
       var s = generateRandomNumber(14) + btoa(generateRandomNumber(6))
-      api_sendCode({code: s, email: formData.email}).then(() => {
+      api_sendCode({ code: s, email: formData.email }).then(() => {
         messageBox.value.open('验证码发送成功', 'success')
       })
     }
@@ -72,7 +73,7 @@ export default defineComponent({
     const forgotPassword = () => { // 确认修改
       resetShow()
       if (objIsNotNull(formData)) {
-        objIsNullName(formData).forEach(item => show[item]=true)
+        objIsNullName(formData).forEach(item => show[item] = true)
         messageBox.value.open('必填项不能为空', 'warn')
         return
       }
@@ -115,6 +116,7 @@ export default defineComponent({
   filter: blur(1px);
   z-index: 0;
 }
+
 .email,
 .password,
 .register {
@@ -143,6 +145,7 @@ export default defineComponent({
   margin-top: -12px;
   margin-bottom: 10px;
 }
+
 .container {
   background-color: #f0e6ff;
   padding: 20px;
@@ -152,5 +155,18 @@ export default defineComponent({
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: relative;
   z-index: 1;
+}
+
+input {
+  padding: 5px;
+  border-radius: 4px;
+  outline: none;
+  border: 1px solid #fff;
+  transition-duration: 500ms;
+}
+
+input:focus {
+  border: 1px solid #6b46c1;
+  transition-duration: 500ms;
 }
 </style>
