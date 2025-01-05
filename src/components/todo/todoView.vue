@@ -1,13 +1,13 @@
 <template>
     <div v-if="show" :class="zoom?'todo_container_max':'todo_container'" id="todo_con">
         <div class="title" id="todo">
-            <div>代办事项</div>
+            <div class="title_text">代办事项</div>
             <div class="tool_group">
                 <el-dropdown>
                     <span class="menu">菜单</span>
                     <template #dropdown>
                         <el-dropdown-menu>
-                            <el-dropdown-item @click="todoCreate(todoForms)">新增</el-dropdown-item>
+                            <el-dropdown-item @click="todoCreate">新增</el-dropdown-item>
                             <el-dropdown-item @click="setHide">{{ hide ? '显示' : '隐藏' }}已完成</el-dropdown-item>
                         </el-dropdown-menu>
                     </template>
@@ -97,7 +97,7 @@
 import { defineComponent, type Ref } from 'vue'
 import { MoreFilled } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
-import { computed, onBeforeMount, reactive, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import dayjs from "dayjs";
 import { api_deletetodo, api_inserttodo, api_searchtodo, api_selectalltodo, api_updatetodo } from "@/api/todo";
 import { drag, resetDrag, type TodoForm } from './type';
@@ -121,7 +121,6 @@ export default defineComponent({
         const todoList: Ref<any> = ref([])
         const todoKeyword = ref("")
         const todoKeyType = ref("")
-        const todoForms = ref(null)
         const height = ref(0)
         const show = ref(false)
         const zoom = ref(false)
@@ -269,7 +268,7 @@ export default defineComponent({
             }, 10)
         }
         return {
-            drawer, edit, hide, todoForm, todoList, todoKeyword, todoKeyType, todoForms,
+            drawer, edit, hide, todoForm, todoList, todoKeyword, todoKeyType,
             height, setTime, show, zoom,
             handleEditTodo, getTodoList, todoCreate, todoSave, todoRemove, todoFinish,
             todoSearch, setHide, showDialog, setZoom
@@ -314,9 +313,14 @@ export default defineComponent({
     align-items: center;
 }
 
+.title_text {
+    color: #6b46c1;
+    font-size: 14px;
+}
+
 .el_icon {
     padding: 4px 5px;
-    color: #363a69;
+    color: #6b46c1;
     transition-duration: 500ms;
 }
 
@@ -334,6 +338,10 @@ export default defineComponent({
     text-decoration: none;
     font-weight: bold;
     color: rgb(43, 128, 226);
+}
+
+.menu {
+    color: #6b46c1;
 }
 
 .menu:hover,

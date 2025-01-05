@@ -1,7 +1,7 @@
 import axios, { type AxiosInstance, type InternalAxiosRequestConfig, type AxiosResponse } from 'axios';
  // 基础 URL
-const baseURL: string = 'api'
-// const baseURL: string = 'http://127.0.0.1:4000'
+export const baseURL: string = 'api'
+// const baseURL: string = 'https://hksofy-hzcsfn-4000.app.cloudstudio.work/'
 
 const request: AxiosInstance = axios.create({
   baseURL,

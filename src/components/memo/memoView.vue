@@ -1,7 +1,7 @@
 <template>
     <transition>
-        <div v-if="show" :class="zoom?'memo_container_max':'memo_container'">
-            <div class="head" id="memo">
+        <div v-if="show" :class="zoom?'memo_container_max':'memo_container'" id="memo">
+            <div class="head">
                 <div class="head_title">备忘录</div>
                 <div class="tool_group">
                     <div v-if="type == 'list'" class="iconfont icon-shanchu" @click="batchRemove"></div>
@@ -302,7 +302,7 @@ export default defineComponent({
     components: {imgView},
     created() {
         document.addEventListener("click", (e: any) => {
-            if (!e.target.className.includes('icon-sandian')) {
+            if (typeof e.target.className == 'string' && !e.target.className.includes('icon-sandian')) {
                 if(this.list.length) {
                     this.list.forEach((item: any) => item.showSelect = false)
                 }

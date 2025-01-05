@@ -37,15 +37,35 @@ const router = createRouter({
       path: '/room',
       name: 'Room',
       component: () => import('@/views/Room/RoomView.vue')
+    },
+    {
+      path: '/blog',
+      name: 'Blog',
+      component: () => import('@/views/Blog/BlogView.vue')
+    },
+    {
+      path: '/about',
+      name: 'About',
+      component: () => import('@/views/Blog/AboutView.vue')
+    },
+    {
+      path: '/pblog',
+      name: 'Pblog',
+      component: () => import('@/views/Blog/PblogView.vue')
+    },
+    {
+      path: '/blogadmin',
+      name: 'BlogAdmin',
+      component: () => import('@/views/BlogAdmin/homeView.vue')
     }
   ]
 })
 
-router.beforeEach((to) => {
+router.beforeEach((to: any) => {
   const token = localStorage.getItem('token')
-  if (
+  if ( // 非登录状态下可访问
     !token &&
-    (to.name !== 'Login' && to.name !== 'Register' && to.name !== 'Forgot')
+    !['Login', 'Register', 'Forgot', 'Blog', 'About', 'Pblog'].includes(to.name)
   ) {
     return { name: 'Login' }
   }

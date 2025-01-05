@@ -1,8 +1,9 @@
 <template>
     <div>
         <div class="content">
-            <div class="title" @click="handleNav('/')">练习汇总平台</div>
+            <div class="title" @click="handleNav('/')">Kinron平台</div>
             <div class="box">
+                <div class="project" @click="handleNav('/blog')">个人博客</div>
                 <el-dropdown v-show="show">
                     <span class="project">个人项目</span>
                     <template #dropdown>
@@ -10,6 +11,7 @@
                             <el-dropdown-item @click="handleNav('/memo')">备忘录</el-dropdown-item>
                             <el-dropdown-item @click="handleNav('/todo')">待办</el-dropdown-item>
                             <el-dropdown-item @click="handleNav('/room')">立体房间</el-dropdown-item>
+                            <el-dropdown-item @click="handleNav('/design')">组件设计器</el-dropdown-item>
                         </el-dropdown-menu>
                     </template>
                 </el-dropdown>
@@ -82,6 +84,9 @@ export default defineComponent({
                 return
             }else if(url == '/todo') {
                 todo.value.showDialog()
+                return
+            }else if(url == '/design') {
+                window.open("https://kinflower.github.io/cdesign/", '_blank')
                 return
             }
             router.push(url)

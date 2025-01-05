@@ -25,26 +25,26 @@ export function drag() {
         if (e.target === draggable) {
             active = true;
         }
-    }
-    document.onmousemove = (e: any) => {
-        if (active) {
-            e.preventDefault();
-            currentX = e.clientX - initialX;
-            currentY = e.clientY - initialY;
-            xOffset = currentX;
-            yOffset = currentY;
-            draggable.style.transform = "translate3d(" + currentX + "px, " + currentY + "px, 0)"
+        document.onmousemove = (e: any) => {
+            if (active) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+                xOffset = currentX;
+                yOffset = currentY;
+                draggable.style.transform = "translate3d(" + currentX + "px, " + currentY + "px, 0)"
+            }
         }
-    }
-    document.onmouseup = () => {
-        initialX = currentX;
-        initialY = currentY;
-        active = false;
-    }
-    document.onmouseleave = () => {
-        initialX = currentX;
-        initialY = currentY;
-        active = false;
+        document.onmouseup = () => {
+            initialX = currentX;
+            initialY = currentY;
+            active = false;
+        }
+        document.onmouseleave = () => {
+            initialX = currentX;
+            initialY = currentY;
+            active = false;
+        }
     }
 }
 export function resetDrag() {
