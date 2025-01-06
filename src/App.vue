@@ -3,6 +3,7 @@
     <HeadView v-show="show"></HeadView>
   </keep-alive>
   <RouterView />
+  <messageBox ref="messageBox"></messageBox>
 </template>
 
 <script lang="ts">
@@ -11,6 +12,7 @@ import { defineComponent, onBeforeMount, ref, type Ref } from 'vue'
 export default defineComponent({
   setup() {
     const show: Ref<boolean> = ref(true)
+      const messageBox: Ref<any> = ref(null)
     function checkLogin() {
       const token = localStorage.getItem('token')
         if (token) {
@@ -23,7 +25,7 @@ export default defineComponent({
       checkLogin()
     })
     return {
-      show, checkLogin
+      show, checkLogin, messageBox
     }
   }
 })

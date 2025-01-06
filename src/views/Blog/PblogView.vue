@@ -27,6 +27,7 @@ vb<template>
             <div class="page">
                 <el-pagination background layout="prev, pager, next" :current-page="param.current" :total="param.total" @current-change="handlePage" />
             </div>
+            <el-backtop :right="100" :bottom="100" />
         </el-scrollbar>
     </div>
 </template>

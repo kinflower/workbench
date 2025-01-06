@@ -12,6 +12,12 @@ export interface AppForm {
     url: string,
     imgUrl: string,
     type: string,
-    uploadType: string,
-    chose: boolean
+    uploadType: string
+}
+export interface BlogForm {
+    id?: string,
+    title: string,
+    src: string,
+    time: string,
+    type: string
 }

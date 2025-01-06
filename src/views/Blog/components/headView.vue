@@ -1,6 +1,6 @@
 <template>
     <div class="head">
-        <div class="left" @click="handleTab('Home')">Personal Photo Album</div>
+        <div class="left" @click="handleTab('Home')">个人作品相册</div>
         <div class="right_moblie">
             <el-dropdown placement="bottom">
                 <el-icon>
@@ -8,17 +8,17 @@
                 </el-icon>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item @click="handleTab('Home')">Home</el-dropdown-item>
-                        <el-dropdown-item @click="handleTab('About')">About</el-dropdown-item>
-                        <el-dropdown-item @click="handleTab('Blog')">Blog</el-dropdown-item>
+                        <el-dropdown-item @click="handleTab('Home')">主页</el-dropdown-item>
+                        <el-dropdown-item @click="handleTab('About')">关于</el-dropdown-item>
+                        <el-dropdown-item @click="handleTab('Blog')">博客</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
         </div>
         <div class="right">
-            <div :class="index==1?'active_title':'right_title'" @click="handleTab('Home')">Home</div>
-            <div :class="index==2?'active_title':'right_title'" @click="handleTab('About')">About</div>
-            <div :class="index==3?'active_title':'right_title'" @click="handleTab('Blog')">Blog</div>
+            <div :class="index==1?'active_title':'right_title'" @click="handleTab('Home')">主页</div>
+            <div :class="index==2?'active_title':'right_title'" @click="handleTab('About')">关于</div>
+            <div :class="index==3?'active_title':'right_title'" @click="handleTab('Blog')">博客</div>
         </div>
     </div>
 </template>

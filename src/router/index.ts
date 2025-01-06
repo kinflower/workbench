@@ -52,11 +52,6 @@ const router = createRouter({
       path: '/pblog',
       name: 'Pblog',
       component: () => import('@/views/Blog/PblogView.vue')
-    },
-    {
-      path: '/blogadmin',
-      name: 'BlogAdmin',
-      component: () => import('@/views/BlogAdmin/homeView.vue')
     }
   ]
 })

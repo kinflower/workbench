@@ -22,3 +22,27 @@ export function api_select_page_pic(params: object) {
         params
     })
 }
+
+export function api_insert_blog(data: object) {
+    return request({
+        url: '/insertBlog',
+        method: 'POST',
+        data
+    })
+}
+
+export function api_update_blog(data: object) {
+    return request({
+        url: '/updateBlog',
+        method: 'POST',
+        data
+    })
+}
+
+export function api_remove_blog(data: object) {
+    return request({
+        url: '/removeBlog',
+        method: 'POST',
+        data
+    })
+}

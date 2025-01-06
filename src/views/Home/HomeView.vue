@@ -83,29 +83,22 @@ export default defineComponent({
             }
             window.open(searchList.value[curSearch.value].url + val.target.value, '_blank')
         }
-        onMounted(() => {
-            if (infoStores.info.email) {
-                api_selectSetting({ email: infoStores.info.email }).then((res: any) => {
-                    setting.value = res.message[0]
-                    const bg: any = document.getElementById('bg')?.style
-                    bg.backgroundImage = `url('${setting.value.imgUrl}')`
-                })
-            } else {
-                api_personalInfo().then((res: any) => {
-                    api_selectSetting({ email: res.message.email }).then((res: any) => {
-                        setting.value = res.message[0]
-                        const bg: any = document.getElementById('bg')?.style
-                        bg.backgroundImage = `url('${setting.value.imgUrl}')`
-                    })
-                })
+        onMounted(async () => {
+            if (!infoStores.info.email) {
+                await api_personalInfo()
             }
             api_selectSetting({ email: infoStores.info.email }).then((res: any) => {
                 setting.value = res.message[0]
                 const bg: any = document.getElementById('bg')?.style
                 bg.backgroundImage = `url('${setting.value.imgUrl}')`
             })
+            api_selectSetting({ email: infoStores.info.email }).then((res: any) => {
+                setting.value = res.message[0]
+                const bg: any = document.getElementById('bg')?.style
+                bg.backgroundImage = `url('${setting.value.imgUrl}')`
+            })
             api_selectApp().then((res: any) => {
-                appList.value = appList.value.concat(res.message.filter((item: any) => item.type == 'url'))
+                appList.value = res.message.filter((item: any) => item.type == 'url')
                 searchList.value = res.message.filter((item: any) => item.type == 'search')
             })
             document.addEventListener("click", (e: any) => {

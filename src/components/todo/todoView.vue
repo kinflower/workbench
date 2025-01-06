@@ -284,8 +284,8 @@ export default defineComponent({
     top: 50px;
     left: 0;
     right: 0;
-    width: 300px;
-    height: 400px;
+    width: 400px;
+    height: 550px;
     z-index: 5;
     background: #fff;
     margin: auto;
