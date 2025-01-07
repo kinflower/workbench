@@ -13,7 +13,7 @@
             </el-form-item>
             <el-form-item label="字体大小">
                 <el-input type="number" style="max-width: 200px;" v-model="setting.fontSize" min="10" max="30"
-                    placeholder="输入字体大小" clearable @change="limitFontSize" />
+                    placeholder="输入字体大小" />
             </el-form-item>
             <el-form-item label="字体颜色">
                 <el-color-picker v-model="setting.fontColor" clearable />
@@ -27,11 +27,11 @@
             </el-form-item>
             <el-form-item label="图标大小">
                 <el-input type="number" style="max-width: 200px;" v-model="setting.size" min="40" max="75"
-                    placeholder="输入图标大小" clearable @change="limitSize" />
+                    placeholder="输入图标大小" />
             </el-form-item>
             <el-form-item label="图标圆角">
                 <el-input type="number" style="max-width: 200px;" v-model="setting.radius" min="0" max="50"
-                    placeholder="输入图标圆角" clearable @change="limitSize" />
+                    placeholder="输入图标圆角" />
             </el-form-item>
             <el-form-item>
                 <el-button color="#A477CD" plain @click="save">保存</el-button>
@@ -53,6 +53,7 @@ export default defineComponent({
     setup() {
         const infoStores: any = useInfoStore()
         const setting: Setting = reactive({
+            id: null,
             imgUrl: "",
             fontSize: null,
             fontColor: null,
@@ -60,16 +61,8 @@ export default defineComponent({
             size: null,
             column: null
         })
-        function limitFontSize(e: any) {
-            if (parseInt(e.target.value) < 10) {
-                e.target.value = '10'
-            }
-            if (parseInt(e.target.value) > 30) {
-                e.target.value = '30'
-            }
-        }
         function save() { // 保存设置信息
-            api_updateSetting(setting).then((res: any) => {
+            api_updateSetting(Object.assign({},setting)).then((res: any) => {
                 ElMessage({ type: 'success', message: res.message, showClose: true })
                 getSetting()
             })
@@ -79,6 +72,7 @@ export default defineComponent({
                 await api_personalInfo()
             }
             api_selectSetting({ email: infoStores.info.email }).then((res: any) => {
+                setting.id = res.message[0].id
                 setting.imgUrl = res.message[0].imgUrl
                 setting.fontSize = res.message[0].fontSize
                 setting.fontColor = res.message[0].fontColor
@@ -97,21 +91,12 @@ export default defineComponent({
                 setting.imgUrl = res.file
             })
         }
-        function limitSize(e: any) {
-            console.log(e)
-            if (parseInt(e.target.value) < 40) {
-                e.target.value = '40'
-            }
-            if (parseInt(e.target.value) > 75) {
-                e.target.value = '75'
-            }
-        }
         onMounted(() => {
             getSetting()
         })
         return {
             setting,
-            limitFontSize, save, selectBgImg, upload, limitSize
+            save, selectBgImg, upload
         }
     },
     components: {

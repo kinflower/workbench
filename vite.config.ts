@@ -9,7 +9,7 @@ export default defineConfig({
     proxy: {
       '/api': {
         // target: 'http://127.0.0.1:4000/',
-        target: 'https://hksofy-hzcsfn-4000.app.cloudstudio.work/',
+        target: 'https://kywnnw-mgokjq-4000.app.cloudstudio.work/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }

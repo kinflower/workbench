@@ -17,7 +17,7 @@
         </div>
 
         <div class="content">
-            <div class="item" :style="`width:${setting.column ? setting.column : '20%'}`" v-for="(item, index) in appList"
+            <div class="item" :style="`width:${setting.column ? getWidth(setting.column) : '20%'}`" v-for="(item, index) in appList"
                 :key="index">
                 <div @click="openApp(item)">
                     <img v-if="item.imgUrl" class="app_icon" :style="iconStyle" :src="item.imgUrl">
@@ -83,15 +83,19 @@ export default defineComponent({
             }
             window.open(searchList.value[curSearch.value].url + val.target.value, '_blank')
         }
+        function getWidth(val: string) {
+            if(val == '4') {
+                return '25%'
+            }else if(val == '5') {
+                return '20%'
+            }else if(val == '6') {
+                return '16.3%'
+            }
+        }
         onMounted(async () => {
             if (!infoStores.info.email) {
                 await api_personalInfo()
             }
-            api_selectSetting({ email: infoStores.info.email }).then((res: any) => {
-                setting.value = res.message[0]
-                const bg: any = document.getElementById('bg')?.style
-                bg.backgroundImage = `url('${setting.value.imgUrl}')`
-            })
             api_selectSetting({ email: infoStores.info.email }).then((res: any) => {
                 setting.value = res.message[0]
                 const bg: any = document.getElementById('bg')?.style
@@ -110,7 +114,7 @@ export default defineComponent({
         return {
             appList, search, setting, curSearch, searchList, showSearch,
             iconStyle, titleStyle,
-            openApp, setSearch, handleSearch
+            openApp, setSearch, handleSearch, getWidth
         }
     }
 });

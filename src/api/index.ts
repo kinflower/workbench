@@ -1,7 +1,7 @@
 import axios, { type AxiosInstance, type InternalAxiosRequestConfig, type AxiosResponse } from 'axios';
  // 基础 URL
 export const baseURL: string = 'api'
-// const baseURL: string = 'https://hksofy-hzcsfn-4000.app.cloudstudio.work/'
+// const baseURL: string = 'https://kywnnw-mgokjq-4000.app.cloudstudio.work/'
 
 const request: AxiosInstance = axios.create({
   baseURL,

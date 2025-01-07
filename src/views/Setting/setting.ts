@@ -1,4 +1,5 @@
 export interface Setting {
+    id: null | string,
     imgUrl: string,
     fontSize: null | string,
     fontColor: null | string,

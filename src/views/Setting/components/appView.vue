@@ -2,11 +2,11 @@
     <div class="app_content">
         <el-tabs v-model="activeName">
             <el-tab-pane label="输入框" name="search">
+                <div class="btn_group">
+                    <el-button type="primary" @click="addShow('search')">新增</el-button>
+                    <el-button type="danger" @click="batchRemove">删除</el-button>
+                </div>
                 <el-scrollbar height="80vh">
-                    <div class="btn_group">
-                        <el-button type="primary" @click="addShow('search')">新增</el-button>
-                        <el-button type="danger" @click="batchRemove">删除</el-button>
-                    </div>
                     <el-table :data="appList_url" border style="width: 98.5%" @selection-change="handleSelectionUrl">
                         <el-table-column type="selection" width="55" />
                         <el-table-column prop="appName" label="应用名称" width="180" />
@@ -33,11 +33,11 @@
                 </el-scrollbar>
             </el-tab-pane>
             <el-tab-pane label="应用" name="url">
+                <div class="btn_group">
+                    <el-button type="primary" @click="addShow('url')">新增</el-button>
+                    <el-button type="danger" @click="batchRemove">删除</el-button>
+                </div>
                 <el-scrollbar height="80vh">
-                    <div class="btn_group">
-                        <el-button type="primary" @click="addShow('url')">新增</el-button>
-                        <el-button type="danger" @click="batchRemove">删除</el-button>
-                    </div>
                     <el-table :data="appList_app" border style="width: 98.5%" @selection-change="handleSelectionApp">
                         <el-table-column type="selection" width="55" />
                         <el-table-column prop="appName" label="应用名称" width="180" />
