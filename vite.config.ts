@@ -2,6 +2,7 @@ import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import { apiURL } from './src/api/index.ts'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -9,7 +10,7 @@ export default defineConfig({
     proxy: {
       '/api': {
         // target: 'http://127.0.0.1:4000/',
-        target: 'https://kywnnw-mgokjq-4000.app.cloudstudio.work/',
+        target: apiURL,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }

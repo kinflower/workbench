@@ -1,0 +1,38 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "NaXiDaqwq.moc3",
+		"Textures": [
+			"NaXiDaqwq.2048/texture_00.png",
+			"NaXiDaqwq.2048/texture_01.png",
+			"NaXiDaqwq.2048/texture_02.png",
+			"NaXiDaqwq.2048/texture_03.png",
+			"NaXiDaqwq.2048/texture_04.png",
+			"NaXiDaqwq.2048/texture_05.png"
+		],
+		"Physics": "NaXiDaqwq.physics3.json",
+		"DisplayInfo": "NaXiDaqwq.cdi3.json",
+		"Motions": {
+			"Idle": [],
+			"Tap": [],
+			"TapHead": []
+		},
+		"Expressions": []
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": [
+				"ParamEyeLOpen",
+				"ParamEyeROpen"
+			]
+		},
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		}
+	],
+	"HitAreas": []
+}
